@@ -1,4 +1,6 @@
 #include "header.h"
+void viewInfo(char username[21]);
+
 
 void memberModule(char username[21]) {
     int option;
@@ -8,7 +10,7 @@ void memberModule(char username[21]) {
         printf("1. View info\n");
         printf("2. Make a purchase\n");
         printf("3. Purchase History\n");
-        printf("4. Add referral\n");
+        printf("4. View referral\n");
         printf("> ");
         scanf("%d", &option);
         rewind(stdin);
@@ -23,7 +25,7 @@ void memberModule(char username[21]) {
             pHistory();
             break;
         case 4:
-            addRef();
+            viewRef();
             break;
         default:
             printf("Invalid choice. Please enter again.\n");
@@ -69,4 +71,12 @@ void viewInfo(char username[21]) {
             }
         }
     }
+}
+
+//void purchase()
+
+//void pHistory()
+
+void viewRef() {
+
 }
