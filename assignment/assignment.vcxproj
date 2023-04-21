@@ -20,11 +20,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="memberLogin.c" />
+    <ClCompile Include="memberModule.c" />
     <ClCompile Include="menu.c" />
     <ClCompile Include="staffLogin.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="memberLogin.txt" />
+    <Text Include="staffLogin.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

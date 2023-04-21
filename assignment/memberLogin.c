@@ -2,33 +2,36 @@
 
 void memberLogin() {
     Login input, compare;
-    FILE * flogin = fopen("memberLogin.txt", "r");
-    if (flogin == NULL) {
-        printf("Error in opening file.\n");
-        return;
-    }
+    FILE * flogin;
 
     printf("WELCOME TO TWAY MLM MEMBER LOGIN PAGE.\n");
-    do {
-        printf("Enter username: \n");
+    while (1) {    
+        flogin = fopen("memberLogin.txt", "r");
+        if (flogin == NULL) {
+            printf("Error in opening file.\n");
+            return;
+        }
+        printf("Enter username: (Enter EXIT to go back to menu)\n");
         printf("> ");
-        scanf("&[^\n]", input.username);
-        while(fscanf(flogin, "%[^||]%[^||]\n", &compare.username, &compare.password)!=EOF) {
-            if (compare.username == input.username) {
+        scanf("%[^\n]", &input.username);
+        rewind(stdin);
+        if (strcmp("EXIT", input.username) == 0 || strcmp("exit", input.username) == 0) {
+            return;
+        }
+        printf("Enter password: \n");
+        printf("> ");
+        scanf("%[^\n]", &input.password);
+        rewind(stdin);
+        while (fscanf(flogin, "%[^|]|%[^\n]\n", &compare.username, &compare.password) != EOF) {
+            if (strcmp(input.username, compare.username) == 0 && strcmp(input.password, compare.password) == 0) {
                 printf("WELCOME USER: %s\n", compare.username);
-                do {
-                    printf("Enter password: (Enter EXIT to go back)\n");
-                    printf("> ");
-                    scanf("&[^\n]", input.password);
-                    if (compare.password == input.password) {
-                        memberModule();
-                    } else if (strcmp("EXIT", input.password) == 0 || strcmp("exit", input.password) == 0) {
-                        break;
-                    } else {
-                        printf("WRONG PASSWORD. PLEASE TRY AGAIN\n");
-                    }
-                } while (1);
+                memberModule(compare.username);
+                return;
+            }
+            else {
+                printf("WRONG USERNAME OR PASSWORD. PLEASE TRY AGAIN\n");
             }
         }
-    } while (1);
+    }
+    fclose(flogin);
 }
