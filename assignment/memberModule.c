@@ -36,7 +36,7 @@ void memberModule(char username[21]) {
 void viewInfo(char username[21]) {
     int option, chg;
     mDetails viewDetails, chgDetails;
-    FILE* fdetails = fopen("memberDetails.txt", "a+");
+    FILE* fdetails = fopen("memberDetails.txt", "r"), *fchg;
     if (fdetails == NULL) {
         printf("Error in opening file.\n");
         return;
@@ -105,8 +105,16 @@ void viewInfo(char username[21]) {
                     rewind(stdin);
                     break;
                 case 5:
-                    while (fscanf(fdetails, "%[^|]|%[^|]|%[^|]|%[^|]|%[^\n]\n", &viewDetails.lDetails.username, &viewDetails.name, &viewDetails.gender, &viewDetails.ic, &viewDetails.phoneNo) != EOF) {
-                        if (viewDetails.lDetails.username)
+                    //open file to change details
+                    fchg = fopen("memberDetails.txt", "a+");
+                    if (fchg == NULL) {
+                        printf("Error in opening file.\n");
+                        return;
+                    }
+                    while (fscanf(fchg, "%[^|]|%[^|]|%[^|]|%[^|]|%[^\n]\n", &viewDetails.lDetails.username, &viewDetails.name, &viewDetails.gender, &viewDetails.ic, &viewDetails.phoneNo) != EOF) {
+                        if (strcmp(viewDetails.lDetails.username, username) == 0) {
+                            fwritef(fchg, "%[^|]|%[^|]|%[^|]|%[^|]|%[^\n]\n", &chgDetails.lDetails.username, &chgDetails.name, &chgDetails.gender, &chgDetails.ic, &chgDetails.phoneNo)
+                        }
                     }
                         fprintf
                     return;
