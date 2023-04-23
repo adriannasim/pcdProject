@@ -69,6 +69,26 @@ struct Stock {
     int reorderQty;
 };
 
+struct Account {
+    char password[7];
+    char pwRecovery[15];
+};
+
+typedef struct {
+    char staffID[5];
+    struct Account pass;
+}Credential;
+
+typedef struct {
+    char staffID[5];
+    char name[51];
+    char position[41];
+    char telno[13];
+    struct Account acc;
+} StaffDetails;
+
 //constants
 #define MAX_SIZE 100
 #define MAX_SHIPMENTS 100
+#define ADMIN "A001"
+#define ADMINPW "000000"

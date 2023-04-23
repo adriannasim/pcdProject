@@ -1,76 +1,17 @@
-#include "Header.h"
-void staffModule();
-void loginStaff();
+#include "header.h"
+
+void staffModule(char staffID[5]);
 void login();
 void signup();
 void recovery();
 void manageStaff();
-void salesModules();
-void stockModule();
 void addStaff();
 void modifyStaff();
 void searchStaff();
 void viewStaff();
 void deleteStaff();
 
-struct Account {
-	char password[7];
-	char pwRecovery[15];
-};
-
-typedef struct {
-	char staffID[5];
-	struct Account pass;
-}Credential;
-
-typedef struct {
-	char staffID[5];
-	char name[51];
-	char position[41];
-	char telno[13];
-	struct Account acc;
-}StaffDetails;
-
-void s2() {
-	loginStaff();
-}
-
-void staffModule() {
-	int action = 0;
-	printf("\n STAFF MODULE\n\n"); 
-	printf(" 1 - Staff Login\n 2 - Manage Staff\n 3 - Sales Module\n 4 - Stock Module\n 5 - Shipping Module\n 6 - Return to Main Menu\n\n");
-	printf(" Select an action > ");
-	scanf("%d", &action);
-	rewind(stdin);
-	while (action != 1 && action != 2 && action != 3 && action != 4 && action != 5 && action != 6) {
-		printf(" Invalid action! Please re-enter > ");
-		scanf("%d", &action);
-		rewind(stdin);
-	}
-	switch (action) {
-	case 1:
-		loginStaff();
-		break;
-	case 2:
-		manageStaff();
-		break;
-	//case 3:
-		//salesModules();
-		//break;
-	//case 4:
-	//	stockModule();
-	//	break;
-	//case 5:
-	//	shippingModule();
-	//	break;
-	case 6:
-		exit(-1);
-		break;
-	default:
-		printf("Please enter a valid action!\n");
-	}
-}
-void loginStaff() {
+void staffLogin() {
 	int action = 0;
 	printf("\n STAFF LOGIN MODULE\n\n");
 	printf(" 1 - Login\n 2 - Sign Up (New User)\n 3 - Password Recovery\n 4 - Back\n\n");
@@ -93,7 +34,7 @@ void loginStaff() {
 		recovery();
 		break;
 	case 4:
-		staffModule();
+		return;
 		break;
 	default:
 		printf(" Invalid action! Please re-enter > ");
@@ -124,7 +65,7 @@ void login() {
 				while (1) {
 					if (strcmp(login[i].acc.password, acc.pass.password) == 0 || strcmp(ADMINPW, acc.pass.password) == 0) {
 						printf("\n Login Successful\n Welcome %s!\n", login[i].name);
-						staffModule();
+						staffModule(login[i].name);
 					}
 					else {
 						printf(" Incorrect Password!\n");
@@ -147,7 +88,7 @@ void login() {
 				while (1) {
 					if (strcmp(login[i].acc.password, acc.pass.password) == 0 || strcmp(ADMINPW, acc.pass.password) == 0) {
 						printf("\n Login Successful\n Welcome ADMIN!\n");
-						staffModule();
+						staffModule("ADMIN");
 					}
 					else {
 						printf(" Incorrect Password!\n");
@@ -159,7 +100,7 @@ void login() {
 		printf(" Continue Log in? (N - No) > ");
 		scanf("%c", &con);
 		if (toupper(con) == 'N') {
-			loginStaff();
+			return;
 		}
 	}
 }
@@ -224,7 +165,7 @@ void signup() {
 							fwrite(&sign[i], sizeof(StaffDetails), 1, wptr);
 						}
 						fclose(wptr);
-						loginStaff();
+						return;
 						break;
 					}
 					else {
@@ -248,7 +189,7 @@ void signup() {
 	rewind(stdin);
 	printf("\n");
 	if (toupper(con) == 'N') {
-		loginStaff();
+		return;
 	}
 }
 
@@ -296,7 +237,7 @@ void recovery() {
 									fwrite(&r[j], sizeof(StaffDetails), 1, wptr);
 								}
 								fclose(wptr);
-								loginStaff();
+								return;
 							}
 							else {
 								printf(" Enter New Password (6 digits)        : ");
@@ -312,11 +253,44 @@ void recovery() {
 					printf(" Continue to recover password? (N - No) > ");
 					scanf("%c", &con);
 					if (toupper(con) == 'N') {
-						loginStaff();
+						return;
 					}
 				}
 			}
 		}
+	}
+}
+
+void staffModule(char staffID[5]) {
+	int action = 0;
+	printf("\n STAFF MODULE\n\n");
+	printf(" 1 - Manage Staff\n 2 - Sales Module\n 3 - Stock Module\n 4 - Shipping Module\n 5 - Return to Main Menu\n\n");
+	printf(" Select an action > ");
+	scanf("%d", &action);
+	rewind(stdin);
+	while (action != 1 && action != 2 && action != 3 && action != 4 && action != 5 && action != 6) {
+		printf(" Invalid action! Please re-enter > ");
+		scanf("%d", &action);
+		rewind(stdin);
+	}
+	switch (action) {
+	case 1:
+		manageStaff();
+		break;
+	case 2:
+		salesModule(staffID);
+		break;
+	case 3:
+		stockModule();
+		break;
+	case 4:
+		shippingModule();
+		break;
+	case 5:
+		return;
+		break;
+	default:
+		printf("Please enter a valid action!\n");
 	}
 }
 
@@ -349,7 +323,7 @@ void manageStaff() {
 		deleteStaff();
 		break;
 	case 6:
-		staffModule();
+		return;
 		break;
 	default:
 		printf(" Invalid action! Please re-enter > ");

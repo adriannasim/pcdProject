@@ -19,7 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="memberModule.c" />
+    <ClCompile Include="staff.c" />
+    <ClCompile Include="member.c" />
     <ClCompile Include="menu.c" />
     <ClCompile Include="sales.c" />
     <ClCompile Include="shipping.c" />
@@ -36,6 +37,9 @@
     <Text Include="memberDetails.txt" />
     <Text Include="stock.txt" />
     <Text Include="temp.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="staff.bin" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

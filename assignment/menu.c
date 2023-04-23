@@ -35,8 +35,7 @@ void main() {
             memberLogin();
         }
         else if (login == 2) {
-            //staffLogin();
-            printf(" stafflogin\n");
+            staffLogin();
         }
         else if (login == 3) {
             printf(" System Shut Down.\n");

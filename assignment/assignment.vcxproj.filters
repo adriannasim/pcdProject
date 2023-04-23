@@ -18,7 +18,7 @@
     <ClCompile Include="menu.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="memberModule.c">
+    <ClCompile Include="member.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="shipping.c">
@@ -28,6 +28,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="sales.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="staff.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -58,5 +61,10 @@
     <Text Include="temp.txt">
       <Filter>Resource Files</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="staff.bin">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
