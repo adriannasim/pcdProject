@@ -24,7 +24,7 @@ typedef struct {
 	double comm;
 }SalesOrder;
 
-void main() {
+void salesModule() {
 	// allow user to input selection
 	int sel = 6;
 	while (sel != 0) {

@@ -30,6 +30,7 @@
   <ItemGroup>
     <Text Include="memberLogin.txt" />
     <Text Include="referrals.txt" />
+    <Text Include="sales.txt" />
     <Text Include="staffLogin.txt" />
     <Text Include="memberDetails.txt" />
   </ItemGroup>
