@@ -1,11 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <string.h>
-#include <Windows.h>
-#include <time.h>
-#include <math.h>
-#pragma warning (disable :4996)
+#include "header.h"
 
 void addSales(char username[21]);
 void searchSales();
@@ -14,24 +7,7 @@ void viewSales();
 void deleteSales();
 void salesReport();
 
-typedef struct {
-	char orderID[5];
-	char code[5];
-	int qty;
-	double bprice,price, tPrice;
-	char username[21];
-	char uplineID[5];
-	double comm;
-}SalesOrder;
-
-typedef struct {
-	char code[5],desc[50];
-	double price;
-	int qty, mlvl, rqty;
-
-}record;
-
-void salesModules() {
+void salesModule() {
 	// allow user to input selection
 	char username[21];
 	int option = 6;
@@ -63,21 +39,21 @@ void salesModules() {
 		case 4:
 			searchSales();
 			break;
-		case 5:salesReport();
+		case 5:
+			salesReport();
 			break;
-		case 6:deleteSales();
+		case 6:
+			deleteSales();
 			break;
 		case 0:
-			printf("Bye Bye\n");
+			return;
 			break;
 		default:
 			printf("Invalid input\n");
 			break;
 		}
 	}
-	system("pause");
 }
-
 
 void addSales(char username[21]) {
 	FILE* wPtr, * rPtr;
@@ -159,7 +135,6 @@ void addSales(char username[21]) {
 	fclose(rPtr);
 }
 
-
 void viewSales() {
 	FILE* rPtr = fopen("sales.txt", "r");
 	if (rPtr == NULL) {
@@ -181,7 +156,6 @@ void viewSales() {
 
 	fclose(rPtr);
 }
-
 
 void editSales() {
 	FILE* rPtr, * wPtr;
@@ -234,7 +208,6 @@ void editSales() {
 	remove("sales.txt");
 	rename("temp.txt", "sales.txt");
 }
-
 
 void searchSales() {
 	FILE* rPtr;

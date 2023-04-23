@@ -412,8 +412,9 @@ void pHistory(char username[21]) {
 void viewRef(char username[21]) {
     char referrer[21], referredUser[21], addRef[21];
     int no = 0, option;
-    FILE* fref, *flogin;
+    FILE* fref, *flogin, *fsales;
     Login check;
+    SalesOrder com;
 
     printf("\n VIEW REFERRALS\n");
     printf(" ==============\n");
@@ -474,6 +475,8 @@ void viewRef(char username[21]) {
                 printf(" Error in opening file.\n");
                 return;
             }
+            char check;
+            double totalCom = 0;
 
             printf("\n REFERRALS:\n\n");
             printf(" %-6s%-24s\n", "NO", "USERNAME");
@@ -482,6 +485,35 @@ void viewRef(char username[21]) {
                 if (strcmp(username, referrer) == 0) {
                     no++;
                     printf(" %-6d%-24s\n", no, referredUser);
+                }
+            }
+            fclose(fref);
+            printf(" \n----------------------\n");
+            while (1) {
+                printf(" You have %d referrals. Check total received commission? (Y-Yes, N-No): \n", no);
+                printf(" > ");
+                scanf("%c", &check);
+                rewind(stdin);
+                if (toupper(check) == 'Y') {
+                    fref = fopen("referrals.txt", "r");
+                    fsales = fopen("sales.txt", "r");
+                    while (fscanf(fref, "%[^|]|%[^\n]\n", &referrer, &referredUser) != EOF) {
+                        while (fscanf(fsales, "%[^|]|%[^|]|%[^|]|%d|%lf\n", &com.username, &com.orderID, &com.code, &com.qty, &com.price) != EOF) {
+                            if (strcmp(referredUser, com.username) == 0) {
+                                totalCom = ((com.price* (double)com.qty) * 0.05);
+                            }
+                        }
+                    }
+                    fclose(fref);
+                    fclose(fsales);
+                    printf(" Your total commission is %.2lf \n\n", totalCom);
+                    break;
+                }
+                else if (toupper(check) == 'N') {
+                    break;
+                }
+                else {
+                    printf(" Invalid input. Please enter again.\n\n");
                 }
             }
             fclose(fref);

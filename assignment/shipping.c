@@ -1,32 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#pragma warning(disable:4996)
-
-#define MAX_SHIPMENTS 100
-
-struct Shipment {
-    char senderName[20];
-    char senderAddress[20];
-    char trackingNumber[20];
-    char receiverName[50];
-    char receiverAddress[100];
-    char trackingstatus[20];
-    float weight;
-    float shippingCost;
-};
-
-typedef struct {
-    char senderName[20];
-    char senderAddress[20];
-    char trackingNumber[20];
-    char receiverName[50];
-    char receiverAddress[100];
-    char trackingstatus[20];
-    float weight;
-    float shippingCost;
-} Shipment;
+#include "header.h"
 
 void readDataFromFile(struct Shipment shipments[], int* numShipments) {
     FILE* fp = fopen("shipping.txt", "r");
@@ -43,11 +15,7 @@ void readDataFromFile(struct Shipment shipments[], int* numShipments) {
     float shippingCost;
     float weight;
 
-
-    
     while (fscanf(fp, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%f,%f\n", senderName, senderAddress, trackingNumber, receiverName, receiverAddress, trackingstatus, &shippingCost, & weight) == 6) {
-       
-        
         strcpy(shipments[*numShipments].trackingNumber, trackingNumber);
         strcpy(shipments[*numShipments].senderName, senderName);
         strcpy(shipments[*numShipments].senderAddress, senderAddress);
@@ -129,8 +97,6 @@ void modifyShipment(Shipment shipments[], int numShipments) {
             return;
         }
     }
-
-
     printf("Shipment not found\n");
 }
 
@@ -157,17 +123,14 @@ void editShipmentTrackingtrackingstatus(Shipment shipments[], int numShipments) 
             return;
         }
     }
-
     printf("\nShipment not found\n");
 }
-
-
 
 void shipmentshippingCostCalculationReport(Shipment shipments[], int numShipments) {
     float totalshippingCost = 0;
     float totalshipingweight = 0;
     int numDelivered = 0;
-   int totalweight = 0;
+    int totalweight = 0;
     int numPending = 0;
     for (int i = 0; i < numShipments; i++) {
         if (strcmp(shipments[i].trackingstatus, "Delivered") == 0)
@@ -192,14 +155,7 @@ void shipmentshippingCostCalculationReport(Shipment shipments[], int numShipment
     printf("Total Weight of delivered shipments: %.2f\n", totalshipingweight);
 }
 
-
-
-
-
-
-
-
-int main()
+int shippingModule()
 {
     Shipment shipments[MAX_SHIPMENTS];
     int numShipments = 0;
@@ -208,7 +164,7 @@ int main()
     int choice;
     do {
         printf("\n-----------------------------------------------------------\n");
-        printf("\t\tWELCOME TO TWAY MLM");
+        printf("\t\tSHIPPING INFORMATION");
         printf("\n-----------------------------------------------------------\n");
         printf("1. Add Shipment\n");
         printf("2. Search Shipment\n");

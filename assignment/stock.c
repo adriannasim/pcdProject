@@ -1,18 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <string.h>
-#include <Windows.h>
-#pragma warning (disable: 4996)
-
-struct Stock {
-    char code[3];
-    char description[30];
-    double price; 
-    int qtyInStock;
-    int minLvl;
-    int reorderQty;
-};
+#include "header.h"
 
 void stock_header();
 void add_stock();
@@ -22,7 +8,7 @@ void search_stock();
 void delete_stock();
 void low_stock_report();
 
-void main() {
+void stockModule() {
     int option;
     stock_header();
     do {
