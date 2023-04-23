@@ -25,11 +25,12 @@ typedef struct {
 	double comm;
 }SalesOrder;
 
-void salesModule() {
+void main() {
 	// allow user to input selection
 	char username[21];
-	int option = 7;
+	int option = 6;
 	while (option != 0) {
+		printf("============================================\n");
 		printf("Main Menu\n");
 		printf("1.Add Sales\n");
 		printf("2.View Sales\n");
@@ -37,8 +38,8 @@ void salesModule() {
 		printf("4.Search Sales\n");
 		printf("5.Generate Sales Report\n");
 		printf("6.Delete Sales Record\n");
-		printf("7.Commission\n");
 		printf("0.Exit\n");
+		printf("============================================\n");
 		printf("Enter your selection : ");
 		scanf("%d", &option);
 		rewind(stdin);
@@ -59,8 +60,6 @@ void salesModule() {
 		case 5:salesReport();
 			break;
 		case 6:deleteSales();
-			break;
-		case 7:commission();
 			break;
 		case 0:
 			printf("Bye Bye\n");
@@ -218,11 +217,12 @@ void searchSales() {
 		printf("Error file open!\n");
 		exit(-1);
 	}
-	int option;
+	int option = 4;
 	char code[100];
-	int found = 0;
-	int match = 0;
-	char tempID[5], tempCode[5];
+	int found = 0, id = 0, codes = 0, qty = 0, pricet = 0;
+	char tempID[5], tempCode[3];
+	int tempQty;
+	double tempPrice;
 	SalesOrder order;
 	while (fscanf(rPtr, "%[^|]|%[^|]|%d|%lf\n", order.orderID, order.code, &order.qty, &order.price) != EOF) {
 		found++;
@@ -234,7 +234,7 @@ void searchSales() {
 			printf("4. Price\n");
 			printf("5. Return\n");
 			do {
-				printf("Search With: ");
+				printf("Search By: ");
 				rewind(stdin);
 				scanf("%d", &option);
 				if (option < 1 || option >5) {
@@ -247,7 +247,7 @@ void searchSales() {
 				char tempID[20];
 
 				printf("\nPlease enter the order ID : ");
-				scanf("%s", tempID); // no need to use %[^\n], just %s will do
+				scanf("%s", &tempID);
 
 				printf("%-20s%-20s%-20s%-20s\n", "Order ID", "Item Code", "Item Quantity", "Price");
 
@@ -255,40 +255,107 @@ void searchSales() {
 				if (strcmp(order.orderID, tempID) == 0) {
 					printf("%-20s%-20s%-20d%-20.2lf\n", order.orderID, order.code, order.qty, order.price);
 					printf("___________________________________________________________________________\n");
-					match++;
+					id++;
 				}
 			}
-			if (match > 0) {
-				printf("%d matches were found\n", match);
+			if (id > 0) {
+				printf("%d matches were found\n", id);
 			}
 			else {
 				printf("0 Matches found. Please make sure format entered is correct\n");
 			}
 			break;
-
 			case 2:
-				printf("\n\nPlease enter the item Code : ");
-				rewind(stdin);
-				scanf("%s", &tempCode);
+			{
+				char tempCode[3];
+				printf("\nPlease enter the item Code : ");
+				scanf("%s", tempCode);
+
 				printf("%-20s%-20s%-20s%-20s\n", "Order ID", "Item Code", "Item Quantity", "Price");
-				printf("___________________________________________________________________________\n");
-				for (int i = 0; i < found; i++) {
+
+				int codes = 0; // initialize codes to 0
+				FILE* rPtr = fopen("sales.txt", "r");
+				if (rPtr == NULL) {
+					printf("Error file open!\n");
+					exit(-1);
+				}
+
+				SalesOrder order;
+				while (fscanf(rPtr, "%[^|]|%[^|]|%d|%lf\n", order.orderID, order.code, &order.qty, &order.price) != EOF) {
 					if (strcmp(order.code, tempCode) == 0) {
-						printf("%-20s%-20s%-20s%-20s", order.orderID, order.code, order.qty, order.price);
-						match++;
+						printf("%-20s%-20s%-20d%-20.2lf\n", order.orderID, order.code, order.qty, order.price);
+						printf("___________________________________________________________________________\n");
+						codes++;
 					}
 				}
-				if (match > 0) {
-					printf("%d match were found\n", match);
+				fclose(rPtr);
+
+				if (codes > 0) {
+					printf("%d matches were found\n", codes);
+				}
+				else {
+					printf("0 Matches found. Please make sure format entered is correct\n");
+				}
+			}
+			break;
+			case 3:
+			{
+				int tempQty;
+				printf("\nPlease enter the item quantity : ");
+				rewind(stdin);
+				scanf("%d", &tempQty);
+				printf("%-20s%-20s%-20s%-20s\n", "Order ID", "Item Code", "Item Quantity", "Price");
+				while (fscanf(rPtr, "%[^|]|%[^|]|%d|%lf\n", order.orderID, order.code, &order.qty, &order.price) != EOF) {
+					if (order.qty == tempQty) {
+						printf("%-20s%-20s%-20d%-20.2lf\n", order.orderID, order.code, order.qty, order.price);
+						printf("___________________________________________________________________________\n");
+						qty++;
+					}
+				}
+			}
+			if (qty > 0) {
+				printf("%d match were found\n", qty);
+			}
+			else {
+				printf("0 Matches found.Please make sure format entered is correct\n");
+			}
+			break;
+			case 4:
+			{
+				double tempPrice;
+				printf("\nPlease enter the item Price : ");
+				rewind(stdin);
+				scanf("%lf", &tempPrice);
+				printf("%-20s%-20s%-20s%-20s\n", "Order ID", "Item Code", "Item Quantity", "Price");
+
+				rewind(rPtr); // move the file pointer back to the beginning of the file
+
+				int pricet = 0; // initialize the count of matching records to zero
+				while (fscanf(rPtr, "%[^|]|%[^|]|%d|%lf\n", order.orderID, order.code, &order.qty, &order.price) != EOF) {
+					if (order.price == tempPrice) {
+						printf("%-20s%-20s%-20d%-20.2lf\n", order.orderID, order.code, order.qty, order.price);
+						printf("___________________________________________________________________________\n");
+						pricet++;
+					}
+				}
+				if (pricet > 0) {
+					printf("%d match were found\n", pricet);
 				}
 				else {
 					printf("0 Matches found.Please make sure format entered is correct\n");
 				}
 				break;
 			}
+			case 5:
+				return;
+				break;
+			default:
+				printf("Invalid input\n");
+				break;
+			}
 		} while (option != 5);
-		fclose(rPtr);
-	}
+
+	}		fclose(rPtr);
 }
 //generate sales report
 void salesReport() {
@@ -297,19 +364,21 @@ void salesReport() {
 		printf("Error file open!\n");
 		exit(-1);
 	}
-
+	double total = 0.0;
 	SalesOrder order;
-	double salesTotal[100] = { 0 }; // initialize all elements to zero
+	printf("_______________Sales Report_________________\n");
+	printf("_____________________________________________\n");
+	printf("Item Code\t\tQuantity\tPrice\tTotal sales\n");
 	while (fscanf(rPtr, "%[^|]|%[^|]|%d|%lf\n", order.orderID,order.code, &order.qty, &order.price) != EOF) {
 		// print the sales report
 		order.tPrice = order.qty * order.price;
-		printf("_______________Sales Report_________________\n");
-		printf("_____________________________________________\n");
-		printf("Item Code\t\tTotal sales\n");
-		printf("%s\t\t\t%.2lf\n", order.code, order.tPrice);
-		printf("________________________________________________\n");
-		fclose(rPtr);
+		total += order.tPrice;
+		printf("%s\t\t\t%d\t\t%.lf\t%.2lf\n", order.code,order.qty,order.price,order.tPrice);
 	}
+	printf("\t\t\t\t\t\t__________\n");
+	printf("\t\t\t\t\t\t%.2lf\n",total);
+	printf("________________________________________________\n");	
+	fclose(rPtr);
 }
 
 void deleteSales() {
@@ -348,37 +417,3 @@ void deleteSales() {
 	remove("sales.txt");
 	rename("temp.txt", "sales.txt");
 }
-void commission() {
-	FILE* rPtr;
-	rPtr = fopen("sales.txt", "r");
-	if (rPtr == NULL) {
-		printf("Error opening file!\n");
-		exit(-1);
-	}
-
-	SalesOrder order;
-	double total_comm = 0.0;
-	char id[5];
-
-	printf("Enter username : ");
-	scanf("%s", id);
-
-	printf("\n_________________________________________________________________\n");
-	printf("   Order ID\t\tItem Code\tQty\tPrice(RM)\tCommission(RM)\n");
-	printf("_________________________________________________________________\n");
-
-	while (fscanf(rPtr, "%[^|]|%[^|]|%d|%lf\n", order.orderID, order.code, &order.qty, &order.price) != EOF) {
-		if (strcmp(order.uplineID, id) == 0) {
-			order.bprice = order.price * order.qty;
-			order.comm = 0.05 * order.bprice;
-			total_comm += order.comm;
-
-			printf("%10s\t\t%5s\t\t%3d\t%10.2lf\t%13.2lf\n", order.orderID, order.code, order.qty, order.price, order.comm);
-		}
-	}
-
-	printf("_________________________________________________________________\n");
-	printf("\t\t\t\t\tTotal Commission: RM %.2lf\n\n", total_comm);
-	fclose(rPtr);
-}
-
