@@ -43,8 +43,5 @@
     <Text Include="referrals.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="sales.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
   </ItemGroup>
 </Project>

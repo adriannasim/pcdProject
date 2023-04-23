@@ -32,7 +32,7 @@ void main() {
         scanf("%d", &login);
         rewind(stdin);
         if (login == 1) { 
-            memberLogin();
+            memberModule();
         }
         else if (login == 2) {
             //staffLogin();

@@ -3,6 +3,8 @@
 #include <ctype.h>
 #include <string.h>
 #include <Windows.h>
+#include <time.h>
+#include <math.h>
 #pragma warning (disable: 4996)
 
 typedef struct{
@@ -17,5 +19,15 @@ typedef struct {
     char ic[13];
     char phoneNo[12];
 } mDetails;
+
+typedef struct {
+	char orderID[5];
+	char code[3];
+	int qty;
+	double price, tPrice;
+	char username[21];
+	char uplineID[5];
+	double comm;
+} SalesOrder;
 
 #define MAX_SIZE 100
