@@ -31,7 +31,7 @@ typedef struct {
 
 }record;
 
-void salesModules() {
+void main() {
 	// allow user to input selection
 	char username[21];
 	int option = 6;
@@ -139,7 +139,7 @@ void addSales(char username[21]) {
 			printf("Invalid price! Please enter a positive number.\nEnter Price : ");
 			rewind(stdin);
 		}
-
+		strcpy(order.username , username);
 		// Write order to file and display success message
 		fprintf(wPtr,"%s|%s|%s|%d|%lf\n",order.username,order.orderID, order.code, order.qty, order.price);
 		printf("Successfully added!\n ");
