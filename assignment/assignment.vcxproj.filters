@@ -21,6 +21,12 @@
     <ClCompile Include="memberModule.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="shipping.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stock.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header.h">
@@ -31,16 +37,16 @@
     <Text Include="memberLogin.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="staffLogin.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
     <Text Include="memberDetails.txt">
       <Filter>Resource Files</Filter>
     </Text>
     <Text Include="referrals.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="sales.txt">
+    <Text Include="shipping.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="stock.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

@@ -21,6 +21,8 @@
   <ItemGroup>
     <ClCompile Include="memberModule.c" />
     <ClCompile Include="menu.c" />
+    <ClCompile Include="shipping.c" />
+    <ClCompile Include="stock.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header.h" />
@@ -28,9 +30,9 @@
   <ItemGroup>
     <Text Include="memberLogin.txt" />
     <Text Include="referrals.txt" />
-    <Text Include="sales.txt" />
-    <Text Include="staffLogin.txt" />
+    <Text Include="shipping.txt" />
     <Text Include="memberDetails.txt" />
+    <Text Include="stock.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
