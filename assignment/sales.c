@@ -78,7 +78,6 @@ void main() {
 	system("pause");
 }
 
-
 void addSales(char username[21]) {
 	FILE* wPtr, * rPtr;
 	wPtr = fopen("sales.txt", "a+");

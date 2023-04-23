@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="memberLogin.c" />
     <ClCompile Include="memberModule.c" />
     <ClCompile Include="menu.c" />
   </ItemGroup>
