@@ -31,7 +31,7 @@ typedef struct {
 
 }record;
 
-void main() {
+void salesModules() {
 	// allow user to input selection
 	char username[21];
 	int option = 6;
@@ -77,6 +77,7 @@ void main() {
 	}
 	system("pause");
 }
+
 
 void addSales(char username[21]) {
 	FILE* wPtr, * rPtr;
