@@ -1,7 +1,11 @@
 #include "header.h"
+
+void memberModule(char username[21]);
 void viewInfo(char username[21]);
 void chgDet(int count, int line);
 void chgPsw(char username[21]);
+void purchase(char username[21]);
+void pHistory(char username[21]);
 void viewRef(char username[21]);
 
 void memberLogin() {
@@ -12,7 +16,7 @@ void memberLogin() {
 
     printf("\n WELCOME TO TWAY MLM MEMBER LOGIN PAGE.\n");
     while (1) {
-        printf(" Login or Register: \n");
+        printf(" \nLogin or Register: \n");
         printf(" 1. Login\n");
         printf(" 2. Register\n");
         printf(" 3. Exit\n");
@@ -173,7 +177,7 @@ void memberModule(char username[21]) {
             viewInfo(username);
             break;
         case 2:
-            //purchase();
+            purchase(username);
             break;
         case 3:
             pHistory(username);
@@ -379,23 +383,29 @@ void chgPsw(char username[21]) {
     fclose(fchg);
 }
 
-//void purchase()
+void purchase(char username[21]) {
+    addSales(username);
+}
 
 void pHistory(char username[21]) {
     FILE* fhistory = fopen("sales.txt", "r");
+    if (fhistory == NULL) {
+        printf(" Error in opening file.\n");
+        return;
+    }
     SalesOrder pHistory;
-    int count;
+    int count = 0;
 
     printf("\n VIEW PURCHASE HISTORY:\n\n");
     printf(" %-12s%-16s%-7s%-17s%-15s\n", "SALES ID", "PRODUCT CODE", "QTY", "PRODUCT PRICE", "TOTAL PRICE");
     printf(" %-12s%-16s%-7s%-17s%-15s\n", "========", "============", "===", "=============", "===========");
-    while (fscanf(fhistory, "%[^|]|%[^|]|%[^|]|%d|%.2lf\n", &pHistory.username, &pHistory.orderID, &pHistory.code, &pHistory.qty, &pHistory.price) != EOF) {
-        if (pHistory.username == username) {
+    while (fscanf(fhistory, "%[^|]|%[^|]|%[^|]|%d|%lf\n", &pHistory.username, &pHistory.orderID, &pHistory.code, &pHistory.qty, &pHistory.price) != EOF) {
+        if (strcmp(pHistory.username, username) == 0) {
             printf(" %-12s%-16s%-7d%-17.2lf%-15.2lf\n", pHistory.orderID, pHistory.code, pHistory.qty, pHistory.price, (double)pHistory.qty* pHistory.price);
             count++;
         }
     }
-    printf(" \n---------------------------\n");
+    printf("\n ---------------------------\n");
     printf(" TOTAL OF %d RECORDS LISTED.\n\n", count);
 }
 

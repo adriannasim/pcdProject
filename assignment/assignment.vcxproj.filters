@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="memberLogin.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="menu.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -41,6 +38,9 @@
       <Filter>Resource Files</Filter>
     </Text>
     <Text Include="referrals.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="sales.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>
