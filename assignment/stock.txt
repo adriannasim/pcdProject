@@ -1,0 +1,10 @@
+A1,Shampoo,22.00,70,30,10
+A2,Bodywash,19.00,67,30,10
+A3,Toothpaste,12.00,30,30,40
+A4,Toothbrush,10.00,60,30,0
+A5,Foam Cleanser,23.00,33,30,40
+A6,Handwash,10.00,22,30,50
+A7,Toilet Paper,15.00,33,30,20
+A8,Deep cleanser,25.00,50,30,20
+A9,Hair conditioner,22.00,60,30,10
+A10,Moisturizer,20.00,20,30,20
