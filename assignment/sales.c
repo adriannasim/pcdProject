@@ -18,7 +18,7 @@ typedef struct {
 	char orderID[5];
 	char code[5];
 	int qty;
-	double bprice,price, tPrice;
+	double price, tPrice;
 	char username[21];
 	char uplineID[5];
 	double comm;
