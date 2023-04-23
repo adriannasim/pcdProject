@@ -21,13 +21,7 @@
     <ClCompile Include="menu.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="staffLogin.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="memberModule.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="sales.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

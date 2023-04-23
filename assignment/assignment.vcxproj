@@ -22,8 +22,6 @@
     <ClCompile Include="memberLogin.c" />
     <ClCompile Include="memberModule.c" />
     <ClCompile Include="menu.c" />
-    <ClCompile Include="sales.c" />
-    <ClCompile Include="staffLogin.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header.h" />
