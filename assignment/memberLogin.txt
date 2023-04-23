@@ -1,2 +1,2 @@
-test1|abc123
-test2|def456
+test1|sim628
+test2|test

@@ -17,3 +17,5 @@ typedef struct {
     char ic[13];
     char phoneNo[12];
 } mDetails;
+
+#define MAX_SIZE 100

@@ -27,6 +27,9 @@
     <ClCompile Include="memberModule.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sales.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header.h">
@@ -44,6 +47,9 @@
       <Filter>Resource Files</Filter>
     </Text>
     <Text Include="referrals.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="sales.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

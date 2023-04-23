@@ -4,7 +4,7 @@ void memberLogin() {
     Login input, compare;
     FILE * flogin;
 
-    printf("WELCOME TO TWAY MLM MEMBER LOGIN PAGE.\n");
+    printf("\nWELCOME TO TWAY MLM MEMBER LOGIN PAGE.\n");
     while (1) {    
         flogin = fopen("memberLogin.txt", "r");
         if (flogin == NULL) {
@@ -24,14 +24,12 @@ void memberLogin() {
         rewind(stdin);
         while (fscanf(flogin, "%[^|]|%[^\n]\n", &compare.username, &compare.password) != EOF) {
             if (strcmp(input.username, compare.username) == 0 && strcmp(input.password, compare.password) == 0) {
-                printf("WELCOME USER: %s\n", compare.username);
+                printf("\nWELCOME USER: %s\n", compare.username);
                 memberModule(compare.username);
                 return;
             }
-            else {
-                printf("WRONG USERNAME OR PASSWORD. PLEASE TRY AGAIN\n");
-            }
         }
+        printf("WRONG USERNAME OR PASSWORD. PLEASE TRY AGAIN\n");
     }
     fclose(flogin);
 }

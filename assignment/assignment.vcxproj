@@ -22,6 +22,7 @@
     <ClCompile Include="memberLogin.c" />
     <ClCompile Include="memberModule.c" />
     <ClCompile Include="menu.c" />
+    <ClCompile Include="sales.c" />
     <ClCompile Include="staffLogin.c" />
   </ItemGroup>
   <ItemGroup>
@@ -30,6 +31,7 @@
   <ItemGroup>
     <Text Include="memberLogin.txt" />
     <Text Include="referrals.txt" />
+    <Text Include="sales.txt" />
     <Text Include="staffLogin.txt" />
     <Text Include="memberDetails.txt" />
   </ItemGroup>
