@@ -18,7 +18,7 @@ typedef struct {
 	char orderID[5];
 	char code[5];
 	int qty;
-	double price, tPrice;
+	double bprice,price, tPrice;
 	char username[21];
 	char uplineID[5];
 	double comm;
@@ -31,7 +31,7 @@ typedef struct {
 
 }record;
 
-void main() {
+void salesModules() {
 	// allow user to input selection
 	char username[21];
 	int option = 6;
@@ -140,7 +140,7 @@ void addSales(char username[21]) {
 		}
 
 		// Write order to file and display success message
-		fprintf(wPtr, "%s|%s|%d|%lf\n",order.orderID, order.code, order.qty, order.price);
+		fprintf(wPtr,"%s|%s|%s|%d|%lf\n",order.username,order.orderID, order.code, order.qty, order.price);
 		printf("Successfully added!\n ");
 
 		// Prompt for continue or exit
