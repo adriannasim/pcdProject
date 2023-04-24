@@ -46,7 +46,7 @@ void login() {
 	Credential acc;
 	char stop = 'Y', con;
 	int lCount = 0;
-	FILE* loginptr = fopen("staff.bin","rb");
+	FILE* loginptr = fopen("staff.bin", "rb");
 	printf("\n -------------");
 	printf("\n  STAFF LOGIN\n");
 	printf(" -------------\n\n");
@@ -81,12 +81,13 @@ void login() {
 						}
 					}
 				}
-			} else if (strcmp(ADMIN, acc.staffID) == 0) {
+			}
+			else if (strcmp(ADMIN, acc.staffID) == 0) {
 				printf(" Enter Password : ");
 				scanf("%s", &acc.pass.password);
 				rewind(stdin);
 				while (1) {
-					if (strcmp(login[i].acc.password, acc.pass.password) == 0 || strcmp(ADMINPW, acc.pass.password) == 0) {
+					if (strcmp(ADMINPW, acc.pass.password) == 0) {
 						printf("\n Login Successful\n Welcome ADMIN!\n");
 						staffModule("ADMIN");
 					}
@@ -104,12 +105,14 @@ void login() {
 					}
 				}
 			}
-		}
-		printf(" Staff ID does not exist!\n");
-		printf(" Continue Log in? (N - No) > ");
-		scanf("%c", &con);
-		if (toupper(con) == 'N') {
-			return;
+			else {
+				printf(" Staff ID does not exist!\n");
+				printf(" Continue Log in? (N - No) > ");
+				scanf("%c", &con);
+				if (toupper(con) == 'N') {
+					staffLogin();
+				}
+			}
 		}
 	}
 }
@@ -174,7 +177,7 @@ void signup() {
 							fwrite(&sign[i], sizeof(StaffDetails), 1, wptr);
 						}
 						fclose(wptr);
-						return;
+						staffLogin();
 						break;
 					}
 					else {
@@ -187,19 +190,20 @@ void signup() {
 					}
 				}
 			}
-		}
-	} 
-	if (!found) {
+			else if (!found) {
 		printf(" Staff ID does not exist!\n");
 	}
 	found = 0;
-	printf("\n Continue Signing Up? (N - No) > ");
+	printf(" Continue Signing Up? (N - No) > ");
 	scanf("%c", &con);
 	rewind(stdin);
 	printf("\n");
 	if (toupper(con) == 'N') {
-		return;
+		staffLogin;
 	}
+		}
+	} 
+	
 }
 
 void recovery() {
@@ -240,6 +244,7 @@ void recovery() {
 							scanf("%c", &sure);
 							if (toupper(sure) == 'Y') {
 								printf("\n Password has been successfully modified!\n");
+								staffLogin();
 								strcpy(r[i].acc.password, check.acc.password);
 								wptr = fopen("staff.bin", "wb");
 								for (int j = 0; j < rCount; j++) {
@@ -378,21 +383,20 @@ void addStaff() {
 							rewind(stdin);
 						}
 					}
-					else if (strcmp(ADMIN, staff.staffID) == 0) {
-						printf(" Staff ID %s is only reserved for ADMIN!\n", ADMIN);
-						printf("\n Continue to add staff? (N-No) > ");
-						scanf("%c", &stop);
-						rewind(stdin);
-						if (toupper(stop) == 'N') {
-							manageStaff();
-						}
-						else {
-							printf("\n Enter Staff ID (e.g A000)                          : ");
-							scanf("%4s", staff.staffID);
+					}	if (strcmp(ADMIN, staff.staffID) == 0) {
+							printf(" Staff ID %s is only reserved for ADMIN!\n", ADMIN);
+							printf("\n Continue to add staff? (N-No) > ");
+							scanf("%c", &stop);
 							rewind(stdin);
+							if (toupper(stop) == 'N') {
+								manageStaff();
+							}
+							else {
+								printf("\n Enter Staff ID (e.g A000)                          : ");
+								scanf("%4s", staff.staffID);
+								rewind(stdin);
+							}
 						}
-					}
-				}
 				valid = 1;
 			}
 			else {
