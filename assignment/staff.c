@@ -63,7 +63,7 @@ void login() {
 				scanf("%s", &acc.pass.password);
 				rewind(stdin);
 				while (1) {
-					if (strcmp(login[i].acc.password, acc.pass.password) == 0 || strcmp(ADMINPW, acc.pass.password) == 0) {
+					if (strcmp(login[i].acc.password, acc.pass.password) == 0) {
 						printf("\n Login Successful\n Welcome %s!\n", login[i].name);
 						staffModule(login[i].name);
 					}
@@ -92,6 +92,15 @@ void login() {
 					}
 					else {
 						printf(" Incorrect Password!\n");
+						printf(" Continue Log In? (N - No) > ");
+						scanf("%c", &stop);
+						rewind(stdin);
+						if (toupper(stop) == 'N') {
+							return;
+						}
+						else {
+							break;
+						}
 					}
 				}
 			}
@@ -369,6 +378,20 @@ void addStaff() {
 							rewind(stdin);
 						}
 					}
+					else if (strcmp(ADMIN, staff.staffID) == 0) {
+						printf(" Staff ID %s is only reserved for ADMIN!\n", ADMIN);
+						printf("\n Continue to add staff? (N-No) > ");
+						scanf("%c", &stop);
+						rewind(stdin);
+						if (toupper(stop) == 'N') {
+							manageStaff();
+						}
+						else {
+							printf("\n Enter Staff ID (e.g A000)                          : ");
+							scanf("%4s", staff.staffID);
+							rewind(stdin);
+						}
+					}
 				}
 				valid = 1;
 			}
@@ -579,7 +602,17 @@ void deleteStaff() {
 				}
 				else {
 					printf(" Deletion attempt unsuccessful!\n");
-					return;
+					printf("\n Continue deleting? (N - No) > ");
+					scanf("%c", &con);
+					rewind(stdin);
+					if (toupper(con) == 'N') {
+						manageStaff();
+					}
+					else {
+						printf(" Enter Staff ID to delete : ");
+						scanf("%s", temp.staffID);
+						rewind(stdin);
+					}
 				}
 			}
 		}
