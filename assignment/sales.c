@@ -1,4 +1,11 @@
-#include "header.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+#include <Windows.h>
+#include <time.h>
+#include <math.h>
+#pragma warning (disable :4996)
 
 void addSales(char username[21]);
 void searchSales();
@@ -6,6 +13,23 @@ void editSales();
 void viewSales();
 void deleteSales();
 void salesReport();
+
+typedef struct {
+	char orderID[5];
+	char code[5];
+	int qty;
+	double bprice,price, tPrice;
+	char username[21];
+	char uplineID[5];
+	double comm;
+}SalesOrder;
+
+typedef struct {
+	char code[5],desc[50];
+	double price;
+	int qty, mlvl, rqty;
+
+}record;
 
 void salesModule() {
 	// allow user to input selection
@@ -234,7 +258,7 @@ void searchSales() {
 			printf("2. Code\n");
 			printf("3. Quantity\n");
 			printf("4. Price\n");
-			printf("5. Username");
+			printf("5. Username\n");
 			printf("6. Return\n");
 			do {
 				printf("Search By: ");
