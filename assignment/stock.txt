@@ -7,4 +7,4 @@ A6,Handwash,10.00,22,30,50
 A7,Toilet Paper,15.00,33,30,20
 A8,Deep cleanser,25.00,50,30,20
 A9,Hair conditioner,22.00,60,30,10
-A10,Moisturizer,20.00,20,30,20
+B1,Moisturizer,20.00,20,30,20
