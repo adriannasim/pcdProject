@@ -24,7 +24,7 @@ int shippingModule()
         printf("3. Modify Shipment\n");
         printf("4. Display All Shipments\n");
         printf("5. Edit Shipment Tracking status\n");
-        printf("6. Shipment Cost and weight Calculation Report\n");
+        printf("6. Shipment Cost Calculation Report\n");
         printf("0. Exit\n");
         printf("Enter choice: ");
         scanf("%d", &choice);
@@ -58,7 +58,7 @@ int shippingModule()
         }
     } while (choice != 0);
 
-    int writeDataToFile(shipments, numShipments);
+  
 }
 
 void readDataFromFile(struct Shipment shipments[], int* numShipments) {
@@ -68,7 +68,7 @@ void readDataFromFile(struct Shipment shipments[], int* numShipments) {
         exit(1);
     }
     char senderName[20];
-    char senderAddress[20];
+    char senderAddress[100];
     char trackingNumber[20];
     char receiverName[50];
     char receiverAddress[100];
@@ -76,7 +76,7 @@ void readDataFromFile(struct Shipment shipments[], int* numShipments) {
     float shippingCost;
     float weight;
 
-    while (fscanf(fp, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%f,%f\n", senderName, senderAddress, trackingNumber, receiverName, receiverAddress, trackingstatus, &shippingCost, & weight) == 6) {
+    while (fscanf(fp, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%f,%f\n",trackingNumber, senderName, senderAddress,  receiverName, receiverAddress, trackingstatus, &shippingCost, &weight) == 8) {
         strcpy(shipments[*numShipments].trackingNumber, trackingNumber);
         strcpy(shipments[*numShipments].senderName, senderName);
         strcpy(shipments[*numShipments].senderAddress, senderAddress);
@@ -164,10 +164,10 @@ void modifyShipment(Shipment shipments[], int numShipments) {
 
 void displayShipments(Shipment shipments[], int numShipments)
 {
-    printf("%-20s%-20s%-20s%-30s%-30s%-20s%-20s%-30s\n", "\n\nTracking Number", "Sender Name", "Sender Address", "Recipient Name", "Delivery Address", "\tTracking status", "\tShipping Cost(RM)", "\tWeight(KG)");
+    printf("%-20s%-20s%-20s%-30s%-35s%-20s%-25s%-30s\n", "\n\nTracking Number", "Sender Name", "Sender Address", "Recipient Name", "\tDelivery Address", "Tracking status", "Shipping Cost(RM)", "Weight(KG)");
     for (int i = 0; i < numShipments; i++) {
-        printf("%-20s%-20s%-20s%-30s%-30s\t%-20s\t%-20.2f\t%-30.2f\n", shipments[i].trackingNumber, shipments[i].senderName,
-            shipments[i].senderAddress, shipments[i].receiverName,shipments[i].receiverAddress, shipments[i].trackingstatus, 
+        printf("%-20s%-20s%-20s%-20s%-55s%-20s%-20.2f%-30.2f\n", shipments[i].trackingNumber, shipments[i].senderName,
+            shipments[i].senderAddress, shipments[i].receiverName, shipments[i].receiverAddress, shipments[i].trackingstatus,
             shipments[i].shippingCost, shipments[i].weight);
     }
 }
@@ -180,7 +180,7 @@ void editShipmentTrackingtrackingstatus(Shipment shipments[], int numShipments) 
         if (strcmp(shipments[i].trackingNumber, trackingNumber) == 0) {
             printf("Enter new trackingstatus: ");
             scanf("%s", shipments[i].trackingstatus);
-            printf("Shipment tracking tracking status modified successfully\n");
+            printf("Shipment tracking status modified successfully\n");
             return;
         }
     }
