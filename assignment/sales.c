@@ -1,4 +1,11 @@
-#include "header.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+#include <Windows.h>
+#include <time.h>
+#include <math.h>
+#pragma warning (disable :4996)
 
 void addSales(char username[21]);
 void searchSales();
@@ -6,6 +13,23 @@ void editSales();
 void viewSales();
 void deleteSales();
 void salesReport();
+
+typedef struct {
+	char orderID[5];
+	char code[5];
+	int qty;
+	double bprice,price, tPrice;
+	char username[21];
+	char uplineID[5];
+	double comm;
+}SalesOrder;
+
+typedef struct {
+	char code[5],desc[50];
+	double price;
+	int qty, mlvl, rqty;
+
+}record;
 
 void salesModule() {
 	// allow user to input selection
@@ -39,21 +63,21 @@ void salesModule() {
 		case 4:
 			searchSales();
 			break;
-		case 5:
-			salesReport();
+		case 5:salesReport();
 			break;
-		case 6:
-			deleteSales();
+		case 6:deleteSales();
 			break;
 		case 0:
-			return;
+			printf("Bye Bye\n");
 			break;
 		default:
 			printf("Invalid input\n");
 			break;
 		}
 	}
+	system("pause");
 }
+
 
 void addSales(char username[21]) {
 	FILE* wPtr, * rPtr;
@@ -135,6 +159,7 @@ void addSales(char username[21]) {
 	fclose(rPtr);
 }
 
+
 void viewSales() {
 	FILE* rPtr = fopen("sales.txt", "r");
 	if (rPtr == NULL) {
@@ -144,7 +169,7 @@ void viewSales() {
 	char id[100];
 	int found = 0;
 	SalesOrder order;
-	while (fscanf(rPtr,"%[^|]|%[^|]|%d|%lf", order.orderID,order.code, &order.qty, &order.price) != EOF) {
+	while (fscanf(rPtr,"%[^|]|%[^|]|%[^|]|%d|%lf\n",order.username, order.orderID,order.code, &order.qty, &order.price) != EOF) {
 			printf("________________________________________\n");
 			printf("Order ID  \t\t: %s\n", order.orderID);
 			printf("Item code \t\t: %s\n", order.code);
@@ -156,6 +181,7 @@ void viewSales() {
 
 	fclose(rPtr);
 }
+
 
 void editSales() {
 	FILE* rPtr, * wPtr;
@@ -171,7 +197,7 @@ void editSales() {
 	printf("Enter Order ID to edit: ");
 	scanf("%[^\n]", id);
 
-	while (fscanf(rPtr, "%[^|]|%[^|]|%d|%lf\n", order.orderID,order.code, &order.qty, &order.price) != EOF) {
+	while (fscanf(rPtr, "%[^|]|%[^|]|%[^|]|%d|%lf\n", order.username, order.orderID, order.code, &order.qty, &order.price) != EOF) {
 		if (strcmp(order.orderID, id) == 0) {
 			found = 1;
 			printf("________________________________________\n");
@@ -192,12 +218,12 @@ void editSales() {
 			printf("Enter Price : ");
 			scanf("%lf", &order.price);
 
-			fprintf(wPtr, "%s|%s|%d|%lf\n", order.orderID,order.code, order.qty, order.price);
+			fprintf(wPtr, "%s|%s|%s|%d|%lf\n", order.username, order.orderID, order.code, order.qty, order.price);
 			printf("Sales order updated successfully!\n");
 			printf("________________________________________\n");
 		}
 		else {
-			fprintf(wPtr, "%s|%s|%d|%lf\n", order.orderID, order.code, order.qty, order.price);
+			fprintf(wPtr, "%s|%s|%s|%d|%lf\n", order.username, order.orderID, order.code, order.qty, order.price);
 		}
 	}
 	if (!found) {
@@ -208,6 +234,7 @@ void editSales() {
 	remove("sales.txt");
 	rename("temp.txt", "sales.txt");
 }
+
 
 void searchSales() {
 	FILE* rPtr;
@@ -223,7 +250,7 @@ void searchSales() {
 	int tempQty;
 	double tempPrice;
 	SalesOrder order;
-	while (fscanf(rPtr, "%[^|]|%[^|]|%d|%lf\n", order.orderID, order.code, &order.qty, &order.price) != EOF) {
+	while (fscanf(rPtr, "%%[^|]|%[^|]|%[^|]|%d|%lf\n", order.username, order.orderID, order.code, &order.qty, &order.price) != EOF) {
 		found++;
 		do {
 			printf("Please Select the number in which category you want to search by\n");
@@ -251,7 +278,7 @@ void searchSales() {
 
 				printf("%-20s%-20s%-20s%-20s\n", "Order ID", "Item Code", "Item Quantity", "Price");
 
-				while (fscanf(rPtr, "%[^|]|%[^|]|%d|%lf\n", order.orderID, order.code, &order.qty, &order.price) != EOF) {
+				while (fscanf(rPtr, "%[^|]|%[^|]|%[^|]|%d|%lf\n", order.username, order.orderID, order.code, &order.qty, &order.price) != EOF) {
 					if (strcmp(order.orderID, tempID) == 0) {
 						printf("%-20s%-20s%-20d%-20.2lf\n", order.orderID, order.code, order.qty, order.price);
 						printf("___________________________________________________________________________\n");
@@ -283,7 +310,7 @@ void searchSales() {
 				}
 
 				SalesOrder order;
-				while (fscanf(rPtr, "%[^|]|%[^|]|%d|%lf\n", order.orderID, order.code, &order.qty, &order.price) != EOF) {
+				while (fscanf(rPtr, "%[^|]|%[^|]|%[^|]|%d|%lf\n", order.username, order.orderID, order.code, &order.qty, &order.price) != EOF) {
 					if (strcmp(order.code, tempCode) == 0) {
 						printf("%-20s%-20s%-20d%-20.2lf\n", order.orderID, order.code, order.qty, order.price);
 						printf("___________________________________________________________________________\n");
@@ -333,7 +360,7 @@ void searchSales() {
 				rewind(rPtr); // move the file pointer back to the beginning of the file
 
 				int pricet = 0; // initialize the count of matching records to zero
-				while (fscanf(rPtr, "%[^|]|%[^|]|%d|%lf\n", order.orderID, order.code, &order.qty, &order.price) != EOF) {
+				while (fscanf(rPtr, "%[^|]|%[^|]|%[^|]|%d|%lf\n", order.username, order.orderID, order.code, &order.qty, &order.price) != EOF) {
 					if (order.price == tempPrice) {
 						printf("%-20s%-20s%-20d%-20.2lf\n", order.orderID, order.code, order.qty, order.price);
 						printf("___________________________________________________________________________\n");
@@ -372,7 +399,7 @@ void salesReport() {
 	printf("_______________Sales Report_________________\n");
 	printf("_____________________________________________\n");
 	printf("Item Code\t\tQuantity\tPrice\tTotal sales\n");
-	while (fscanf(rPtr, "%[^|]|%[^|]|%d|%lf\n", order.orderID,order.code, &order.qty, &order.price) != EOF) {
+	while (fscanf(rPtr, "%[^|]|%[^|]|%[^|]|%d|%lf", order.username, order.orderID, order.code, &order.qty, &order.price) != EOF) {
 		// print the sales report
 		order.tPrice = order.qty * order.price;
 		total += order.tPrice;
@@ -397,7 +424,7 @@ void deleteSales() {
 		printf("Error file open!\n");
 		exit(-1);
 	}
-	while (fscanf(rPtr, "%[^|]|%[^|]|%d|%lf\n", order.orderID,order.code, &order.qty, &order.price) != EOF) {
+	while (fscanf(rPtr, "%[^|]|%[^|]|%[^|]|%d|%lf\n", order.username, order.orderID, order.code, &order.qty, &order.price) != EOF) {
 		if (strcmp(order.orderID, id) == 0) {
 			found = 1;
 			printf("________________________________________\n");
@@ -409,7 +436,7 @@ void deleteSales() {
 			printf("Sales order deleted successfully!\n");
 		}
 		else {
-			fprintf(wPtr, "%s|%s|%d|%lf\n", order.orderID,order.code, order.qty, order.price);
+			fprintf(wPtr, "%s|%s|%s|%d|%lf\n", order.username, order.orderID, order.code, order.qty, order.price);
 		}
 	}
 	if (!found) {
