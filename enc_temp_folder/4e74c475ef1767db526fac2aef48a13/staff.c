@@ -429,8 +429,8 @@ void addStaff() {
 		}
 		strcpy(staff.acc.password, staff.staffID);
 		strcpy(staff.acc.pwRecovery, "none");
-		fwrite(&staff, sizeof(StaffDetails), 1, addptr);
-		fclose(addptr);
+		/*fwrite(&staff, sizeof(StaffDetails), 1, addptr);
+		fclose(addptr);*/
 		printf("\n Would you like to add another staff record? (N to stop) > ");
 		scanf("%c", &stop);
 		records++;
