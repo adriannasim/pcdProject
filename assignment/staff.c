@@ -57,6 +57,29 @@ void login() {
 		printf(" Enter Staff ID : ");
 		scanf("%s", &acc.staffID);
 		rewind(stdin);
+		if (strcmp(ADMIN, acc.staffID) == 0) {
+			printf(" Enter Password : ");
+			scanf("%s", &acc.pass.password);
+			rewind(stdin);
+			while (1) {
+				if (strcmp(ADMINPW, acc.pass.password) == 0) {
+					printf("\n Login Successful\n Welcome ADMIN!\n");
+					staffModule("ADMIN");
+				}
+				else {
+					printf(" Incorrect Password!\n");
+					printf(" Continue Log In? (N - No) > ");
+					scanf("%c", &stop);
+					rewind(stdin);
+					if (toupper(stop) == 'N') {
+						return;
+					}
+					else {
+						break;
+					}
+				}
+			}
+		}
 		for (int i = 0; i < lCount; i++) {
 			if (strcmp(login[i].staffID, acc.staffID) == 0) {
 				printf(" Enter Password : ");
@@ -75,42 +98,21 @@ void login() {
 							recovery();
 						}
 						else {
-							printf(" Enter Password : ");
-							scanf("%s", &acc.pass.password);
-							rewind(stdin);
-						}
-					}
-				}
-			}
-			else if (strcmp(ADMIN, acc.staffID) == 0) {
-				printf(" Enter Password : ");
-				scanf("%s", &acc.pass.password);
-				rewind(stdin);
-				while (1) {
-					if (strcmp(ADMINPW, acc.pass.password) == 0) {
-						printf("\n Login Successful\n Welcome ADMIN!\n");
-						staffModule("ADMIN");
-					}
-					else {
-						printf(" Incorrect Password!\n");
-						printf(" Continue Log In? (N - No) > ");
-						scanf("%c", &stop);
-						rewind(stdin);
-						if (toupper(stop) == 'N') {
-							return;
-						}
-						else {
 							break;
 						}
 					}
 				}
 			}
+			
 			else {
 				printf(" Staff ID does not exist!\n");
 				printf(" Continue Log in? (N - No) > ");
 				scanf("%c", &con);
 				if (toupper(con) == 'N') {
 					staffLogin();
+				}
+				else {
+					break;
 				}
 			}
 		}
@@ -244,13 +246,14 @@ void recovery() {
 							scanf("%c", &sure);
 							if (toupper(sure) == 'Y') {
 								printf("\n Password has been successfully modified!\n");
-								staffLogin();
 								strcpy(r[i].acc.password, check.acc.password);
 								wptr = fopen("staff.bin", "wb");
 								for (int j = 0; j < rCount; j++) {
+									r[j] = r[i];
 									fwrite(&r[j], sizeof(StaffDetails), 1, wptr);
 								}
 								fclose(wptr);
+								staffLogin();
 								return;
 							}
 							else {
@@ -260,15 +263,26 @@ void recovery() {
 							}
 						}
 					}
-					break;
 				}
 				else {
 					printf("\n Your answer doesn't match! \n Please re-try or contact an admin to retrieve your password!\n\n");
 					printf(" Continue to recover password? (N - No) > ");
 					scanf("%c", &con);
+					rewind(stdin);
 					if (toupper(con) == 'N') {
 						return;
 					}
+				}
+			}
+			else {
+				printf(" Continue to recover password? (N - No) > ");
+				scanf("%c", &con);
+				rewind(stdin);
+				if (toupper(con) == 'N') {
+					return;
+				}
+				else {
+					break;
 				}
 			}
 		}
@@ -337,7 +351,6 @@ void manageStaff() {
 		deleteStaff();
 		break;
 	case 6:
-		return;
 		break;
 	default:
 		printf(" Invalid action! Please re-enter > ");
@@ -565,10 +578,10 @@ void viewStaff() {
 }
 
 void deleteStaff() {
-	StaffDetails staff[100], temp;
-	int exist = 0, count = 0, sCount = 0;
+	StaffDetails staff[100], temp, view;
+	int exist = 0, count = 0, sCount = 0, record = 0;
 	char con = 'Y', sure;
-	FILE* vptr, * dltptr = fopen("temp.bin", "wb");
+	FILE* vptr,*viewptr, * dltptr = fopen("temp.bin", "wb");
 	if (dltptr == NULL) {
 		printf("ERROR");
 		exit(-1);
@@ -602,36 +615,29 @@ void deleteStaff() {
 				rewind(stdin);
 				exist++;
 				if (toupper(sure) == 'Y') {
+					
 					printf(" Staff %s has been successfully deleted!\n", temp.staffID);
 				}
 				else {
 					printf(" Deletion attempt unsuccessful!\n");
-					printf("\n Continue deleting? (N - No) > ");
-					scanf("%c", &con);
-					rewind(stdin);
-					if (toupper(con) == 'N') {
-						manageStaff();
-					}
-					else {
-						printf(" Enter Staff ID to delete : ");
-						scanf("%s", temp.staffID);
-						rewind(stdin);
-					}
 				}
 			}
 		}
 		fclose(dltptr);
 		remove("staff.bin");
 		rename("temp.bin", "staff.bin");
+		viewptr = fopen("staff.bin", "rb");
+		printf("\n Staff ID \t Staff Name \t\t Staff Position \t Staff Contact No. \t Staff Password \t Security Answer\n");
+		printf(" ======== \t ========== \t\t ============== \t ================= \t ============== \t ===============\n");
+		while (fread(&view, sizeof(StaffDetails), 1, viewptr) != 0) {
+			printf(" %-7s \t %-20s \t %-15s \t %-15s \t %-20s \t %-20s \n", view.staffID, view.name, view.position, view.telno, view.acc.password, view.acc.pwRecovery);
+			record++;
+		}
+		fclose(viewptr);
+		printf("\n Total Staff Records Displayed : %d\n", record);
 		if(exist == 0) {
 			printf(" Staff ID not found!\n");
 		}
-		printf("\n Continue deleting? (N - No) > ");
-		scanf("%c", &con);
-		rewind(stdin);
-		printf("\n");
-		if (toupper(con) == 'N') {
-			manageStaff();
-		}
+		manageStaff();
 	}
 }
