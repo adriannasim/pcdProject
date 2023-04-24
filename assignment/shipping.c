@@ -1,5 +1,66 @@
 #include "header.h"
 
+void readDataFromFile(struct Shipment shipments[], int* numShipments);
+void searchShipment(Shipment shipments[], int numShipments);
+void addShipment(Shipment shipments[], int* numShipments);
+void modifyShipment(Shipment shipments[], int numShipments);
+void displayShipments(Shipment shipments[], int numShipments);
+void editShipmentTrackingtrackingstatus(Shipment shipments[], int numShipments);
+void shipmentshippingCostCalculationReport(Shipment shipments[], int numShipments);
+
+int shippingModule()
+{
+    Shipment shipments[MAX_SHIPMENTS];
+    int numShipments = 0;
+    readDataFromFile(shipments, &numShipments);
+
+    int choice;
+    do {
+        printf("\n-----------------------------------------------------------\n");
+        printf("\t\tSHIPPING INFORMATION");
+        printf("\n-----------------------------------------------------------\n");
+        printf("1. Add Shipment\n");
+        printf("2. Search Shipment\n");
+        printf("3. Modify Shipment\n");
+        printf("4. Display All Shipments\n");
+        printf("5. Edit Shipment Tracking status\n");
+        printf("6. Shipment Cost and weight Calculation Report\n");
+        printf("0. Exit\n");
+        printf("Enter choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+        case 1:
+            addShipment(shipments, &numShipments);
+            break;
+        case 2:
+            searchShipment(shipments, numShipments);
+            break;
+        case 3:
+            modifyShipment(shipments, numShipments);
+            break;
+        case 4:
+            displayShipments(shipments, numShipments);
+            break;
+        case 5:
+            editShipmentTrackingtrackingstatus(shipments, numShipments);
+            break;
+        case 6:
+            shipmentshippingCostCalculationReport(shipments, numShipments);
+            break;
+        case 0:
+            printf("Exiting program");
+            break;
+        default:
+            printf("Invalid choice\n");
+            break;
+
+        }
+    } while (choice != 0);
+
+    int writeDataToFile(shipments, numShipments);
+}
+
 void readDataFromFile(struct Shipment shipments[], int* numShipments) {
     FILE* fp = fopen("shipping.txt", "r");
     if (fp == NULL) {
@@ -153,59 +214,4 @@ void shipmentshippingCostCalculationReport(Shipment shipments[], int numShipment
     printf("Number of pending shipments: %d\n", numPending);
     printf("Total Cost of delivered shipments: %.2f\n", totalshippingCost);
     printf("Total Weight of delivered shipments: %.2f\n", totalshipingweight);
-}
-
-int shippingModule()
-{
-    Shipment shipments[MAX_SHIPMENTS];
-    int numShipments = 0;
-    readDataFromFile(shipments, &numShipments);
-
-    int choice;
-    do {
-        printf("\n-----------------------------------------------------------\n");
-        printf("\t\tSHIPPING INFORMATION");
-        printf("\n-----------------------------------------------------------\n");
-        printf("1. Add Shipment\n");
-        printf("2. Search Shipment\n");
-        printf("3. Modify Shipment\n");
-        printf("4. Display All Shipments\n");
-        printf("5. Edit Shipment Tracking status\n");
-        printf("6. Shipment Cost and weight Calculation Report\n");
-        printf("0. Exit\n");
-        printf("Enter choice: ");
-        scanf("%d", &choice);
-
-        switch (choice) {
-        case 1:
-            addShipment(shipments, &numShipments);
-            break;
-        case 2:
-            searchShipment(shipments, numShipments);
-            break;
-        case 3:
-            modifyShipment(shipments, numShipments);
-            break;
-        case 4:
-            displayShipments(shipments, numShipments);
-            break;
-        case 5:
-            editShipmentTrackingtrackingstatus(shipments, numShipments);
-            break;
-        case 6:
-            shipmentshippingCostCalculationReport(shipments, numShipments);
-            break;
-        case 0:
-            printf("Exiting program");
-            break;
-        default:
-            printf("Invalid choice\n");
-            break;
-
-        }
-    } while (choice != 0);
-
-    int writeDataToFile(shipments, numShipments);
-
-    system("pause");
 }

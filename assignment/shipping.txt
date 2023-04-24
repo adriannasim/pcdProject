@@ -1,5 +1,5 @@
-Shipment1,Tway MLM,ID12345,Alice Smith,No 35, Jalan Datuk Haji Ahmad, Kulim, Kedah, Pending,1.50,22.00
-Shipment2,Tway MLM,ID12346,Bob Smith,No 48, Jalan Pekan, Sungai Petani, Kedah, Delivered,1.60,34.50
-Shipment3,Tway MLM,ID12347,Cathy Smith,No 36, Jalan Besar, Alor Setar, Kedah, Delivered,1.70,38.00
-Shipment4,Tway MLM,12348,David Smith,No 34, Jalan Makmur, Padang Besar, Perlis, Delivered,1.80,45.50
-Shipment5,Tway MLM,12349,Ella Smith,No 20, Jalan Permai, Langkawi, Pending,2.90,60.00
+Shipment1,Tway MLM,ID12345,Alice Smith,No 35, Jalan Datuk Haji Ahmad, Kulim, Kedah, Pending,1.50KG,22.00
+Shipment2,Tway MLM,ID12346,Bob Smith,No 48, Jalan Pekan, Sungai Petani, Kedah, Delivered,1.60KG,34.50
+Shipment3,Tway MLM,ID12347,Cathy Smith,No 36, Jalan Besar, Alor Setar, Kedah, Delivered,1.70KG,38.00
+Shipment4,Tway MLM,12348,David Smith,No 34, Jalan Makmur, Padang Besar, Perlis, Delivered,1.80KG,45.50
+Shipment5,Tway MLM,12349,Ella Smith,No 20, Jalan Permai, Langkawi, Pending,2.90KG,60.00

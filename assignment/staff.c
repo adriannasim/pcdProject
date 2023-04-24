@@ -14,7 +14,7 @@ void deleteStaff();
 void staffLogin() {
 	int action = 0;
 	printf("\n STAFF LOGIN MODULE\n\n");
-	printf(" 1 - Login\n 2 - Sign Up (New User)\n 3 - Password Recovery\n 4 - Back\n\n");
+	printf(" 1 - Login\n 2 - Sign Up (New User)\n 3 - Password Recovery\n 4 - Return to Main Menu\n\n");
 	printf(" Select an action > ");
 	scanf("%d", &action);
 	rewind(stdin);
@@ -34,7 +34,7 @@ void staffLogin() {
 		recovery();
 		break;
 	case 4:
-		return;
+		main();
 		break;
 	default:
 		printf(" Invalid action! Please re-enter > ");
@@ -44,26 +44,56 @@ void staffLogin() {
 void login() {
 	StaffDetails login[100];
 	Credential acc;
-	char stop = 'Y', con;
+	char con = 'Y';
 	int lCount = 0;
-	FILE* loginptr = fopen("staff.bin","rb");
+	FILE* loginptr = fopen("staff.bin", "rb");
 	printf("\n -------------");
 	printf("\n  STAFF LOGIN\n");
 	printf(" -------------\n\n");
 	while (fread(&login[lCount], sizeof(StaffDetails), 1, loginptr) != 0) {
 		lCount++;
 	} fclose(loginptr);
-	while (toupper(stop) == 'Y') {
+	while (toupper(con) == 'Y') {
 		printf(" Enter Staff ID : ");
 		scanf("%s", &acc.staffID);
 		rewind(stdin);
+		if (strcmp(ADMIN, acc.staffID) == 0) {
+			printf(" Enter Password : ");
+			scanf("%s", &acc.pass.password);
+			rewind(stdin);
+			if (strcmp(ADMINPW, acc.pass.password) == 0) {
+				printf("\n Login Successful\n Welcome ADMIN!\n");
+				staffModule("ADMIN");
+			}
+			else {
+				printf(" Incorrect Password!\n");
+				printf(" Continue Log In? (N - No) > ");
+				scanf("%c", &con);
+				rewind(stdin);
+				if (toupper(con) == 'Y') {
+					continue;
+				}
+				else
+				{
+					break;
+				}
+			}
+		}
+		else {
+			printf(" Staff ID does not exist!\n");
+			printf(" Continue Log in? (N - No) > ");
+			scanf("%c", &con);
+			if (toupper(con) == 'N') {
+				staffLogin();
+			}
+		}
 		for (int i = 0; i < lCount; i++) {
 			if (strcmp(login[i].staffID, acc.staffID) == 0) {
 				printf(" Enter Password : ");
 				scanf("%s", &acc.pass.password);
 				rewind(stdin);
 				while (1) {
-					if (strcmp(login[i].acc.password, acc.pass.password) == 0 || strcmp(ADMINPW, acc.pass.password) == 0) {
+					if (strcmp(login[i].acc.password, acc.pass.password) == 0) {
 						printf("\n Login Successful\n Welcome %s!\n", login[i].name);
 						staffModule(login[i].name);
 					}
@@ -74,39 +104,26 @@ void login() {
 						if (toupper(con) == 'Y') {
 							recovery();
 						}
-						else {
-							printf(" Enter Password : ");
-							scanf("%s", &acc.pass.password);
-							rewind(stdin);
-						}
-					}
-				}
-			} else if (strcmp(ADMIN, acc.staffID) == 0) {
-				printf(" Enter Password : ");
-				scanf("%s", &acc.pass.password);
-				rewind(stdin);
-				while (1) {
-					if (strcmp(login[i].acc.password, acc.pass.password) == 0 || strcmp(ADMINPW, acc.pass.password) == 0) {
-						printf("\n Login Successful\n Welcome ADMIN!\n");
-						staffModule("ADMIN");
-					}
-					else {
-						printf(" Incorrect Password!\n");
 					}
 				}
 			}
-		}
-		printf(" Staff ID does not exist!\n");
-		printf(" Continue Log in? (N - No) > ");
-		scanf("%c", &con);
-		if (toupper(con) == 'N') {
-			return;
+			else {
+				printf(" Staff ID does not exist!\n");
+				printf(" Continue Log in? (N - No) > ");
+				scanf("%c", &con);
+				if (toupper(con) == 'N') {
+					staffLogin();
+				}
+				else {
+					continue;
+				}
+			}
 		}
 	}
 }
 void signup() {
 	StaffDetails sign[100],view;
-	int sCount = 0, found = 0;
+	int sCount = 0;
 	char con = 'Y';
 	FILE* rptr = fopen("staff.bin", "rb");
 	while (fread(&sign[sCount], sizeof(StaffDetails), 1, rptr) != 0) {
@@ -116,22 +133,21 @@ void signup() {
 	printf("\n -------------------");
 	printf("\n  NEW STAFF SIGN UP\n");
 	printf(" -------------------\n\n");
+	printf(" Enter Staff ID                      : ");
+	scanf("%s", &view.staffID);
+	rewind(stdin);
 	while (toupper(con) == 'Y') {
-		printf(" Enter Staff ID                      : ");
-		scanf("%s", &view.staffID);
-		rewind(stdin);
 		for (int i = 0; i < sCount; i++) {
 			if (strcmp(sign[i].staffID, view.staffID) == 0) {
-				found = 1;
 				while (1) {
-					printf(" Enter Password (Default = Staff ID) : ");
-					scanf("%s", &view.acc.password);
-					rewind(stdin);
-					if (strcmp(sign[i].acc.password, view.acc.password) != 0) {
-						printf(" NOTE: Default password = Staff ID\n");
-					} else {
-						break;
-					}
+				printf(" Enter Password (Default = Staff ID) : ");
+				scanf("%s", &view.acc.password);
+				rewind(stdin);
+				if (strcmp(sign[i].acc.password, view.acc.password) != 0) {
+					printf(" NOTE: Default password = Staff ID\n");
+				} else {
+					break;
+				}
 				}
 				printf(" Enter New Password (6 digits)       : ");
 				while (1) {
@@ -165,7 +181,7 @@ void signup() {
 							fwrite(&sign[i], sizeof(StaffDetails), 1, wptr);
 						}
 						fclose(wptr);
-						return;
+						staffLogin();
 						break;
 					}
 					else {
@@ -178,19 +194,19 @@ void signup() {
 					}
 				}
 			}
-		}
-	} 
-	if (!found) {
-		printf(" Staff ID does not exist!\n");
+			else {
+			printf(" Staff ID does not exist!\n");
 	}
-	found = 0;
-	printf("\n Continue Signing Up? (N - No) > ");
+	printf(" Continue Signing Up? (N - No) > ");
 	scanf("%c", &con);
 	rewind(stdin);
 	printf("\n");
 	if (toupper(con) == 'N') {
-		return;
+		staffLogin;
 	}
+		}
+	} 
+	
 }
 
 void recovery() {
@@ -234,9 +250,11 @@ void recovery() {
 								strcpy(r[i].acc.password, check.acc.password);
 								wptr = fopen("staff.bin", "wb");
 								for (int j = 0; j < rCount; j++) {
+									r[j] = r[i];
 									fwrite(&r[j], sizeof(StaffDetails), 1, wptr);
 								}
 								fclose(wptr);
+								staffLogin();
 								return;
 							}
 							else {
@@ -246,15 +264,26 @@ void recovery() {
 							}
 						}
 					}
-					break;
 				}
 				else {
 					printf("\n Your answer doesn't match! \n Please re-try or contact an admin to retrieve your password!\n\n");
 					printf(" Continue to recover password? (N - No) > ");
 					scanf("%c", &con);
+					rewind(stdin);
 					if (toupper(con) == 'N') {
 						return;
 					}
+				}
+			}
+			else {
+				printf(" Continue to recover password? (N - No) > ");
+				scanf("%c", &con);
+				rewind(stdin);
+				if (toupper(con) == 'N') {
+					return;
+				}
+				else {
+					break;
 				}
 			}
 		}
@@ -264,11 +293,11 @@ void recovery() {
 void staffModule(char staffID[5]) {
 	int action = 0;
 	printf("\n STAFF MODULE\n\n");
-	printf(" 1 - Manage Staff\n 2 - Sales Module\n 3 - Stock Module\n 4 - Shipping Module\n 5 - Return to Main Menu\n\n");
+	printf(" 1 - Manage Staff\n 2 - Sales Module\n 3 - Stock Module\n 4 - Shipping Module\n 5 - Return to Staff Login\n\n");
 	printf(" Select an action > ");
 	scanf("%d", &action);
 	rewind(stdin);
-	while (action != 1 && action != 2 && action != 3 && action != 4 && action != 5 && action != 6) {
+	while (action != 1 && action != 2 && action != 3 && action != 4 && action != 5) {
 		printf(" Invalid action! Please re-enter > ");
 		scanf("%d", &action);
 		rewind(stdin);
@@ -287,7 +316,7 @@ void staffModule(char staffID[5]) {
 		shippingModule();
 		break;
 	case 5:
-		return;
+		staffLogin();
 		break;
 	default:
 		printf("Please enter a valid action!\n");
@@ -297,7 +326,7 @@ void staffModule(char staffID[5]) {
 void manageStaff() {
 	int action = 0;
 	printf("\n STAFF MANAGEMENT\n\n");
-	printf(" 1 - Add Staff\n 2 - Modify Staff\n 3 - Search Staff\n 4 - View Staff\n 5 - Delete Staff\n 6 - Back\n\n");
+	printf(" 1 - Add Staff\n 2 - Modify Staff\n 3 - Search Staff\n 4 - View Staff\n 5 - Delete Staff\n 6 - Return to Staff Login\n\n");
 	printf(" Select an action > ");
 	scanf("%d", &action);
 	rewind(stdin);
@@ -323,7 +352,7 @@ void manageStaff() {
 		deleteStaff();
 		break;
 	case 6:
-		return;
+		staffLogin();
 		break;
 	default:
 		printf(" Invalid action! Please re-enter > ");
@@ -369,7 +398,20 @@ void addStaff() {
 							rewind(stdin);
 						}
 					}
-				}
+					}	if (strcmp(ADMIN, staff.staffID) == 0) {
+							printf(" Staff ID %s is only reserved for ADMIN!\n", ADMIN);
+							printf("\n Continue to add staff? (N-No) > ");
+							scanf("%c", &stop);
+							rewind(stdin);
+							if (toupper(stop) == 'N') {
+								manageStaff();
+							}
+							else {
+								printf("\n Enter Staff ID (e.g A000)                          : ");
+								scanf("%4s", staff.staffID);
+								rewind(stdin);
+							}
+						}
 				valid = 1;
 			}
 			else {
@@ -538,10 +580,10 @@ void viewStaff() {
 }
 
 void deleteStaff() {
-	StaffDetails staff[100], temp;
-	int exist = 0, count = 0, sCount = 0;
+	StaffDetails staff[100], temp, view;
+	int exist = 0, count = 0, sCount = 0, record = 0;
 	char con = 'Y', sure;
-	FILE* vptr, * dltptr = fopen("temp.bin", "wb");
+	FILE* vptr,*viewptr, * dltptr = fopen("temp.bin", "wb");
 	if (dltptr == NULL) {
 		printf("ERROR");
 		exit(-1);
@@ -575,26 +617,29 @@ void deleteStaff() {
 				rewind(stdin);
 				exist++;
 				if (toupper(sure) == 'Y') {
+					
 					printf(" Staff %s has been successfully deleted!\n", temp.staffID);
 				}
 				else {
 					printf(" Deletion attempt unsuccessful!\n");
-					return;
 				}
 			}
 		}
 		fclose(dltptr);
 		remove("staff.bin");
 		rename("temp.bin", "staff.bin");
+		viewptr = fopen("staff.bin", "rb");
+		printf("\n Staff ID \t Staff Name \t\t Staff Position \t Staff Contact No. \t Staff Password \t Security Answer\n");
+		printf(" ======== \t ========== \t\t ============== \t ================= \t ============== \t ===============\n");
+		while (fread(&view, sizeof(StaffDetails), 1, viewptr) != 0) {
+			printf(" %-7s \t %-20s \t %-15s \t %-15s \t %-20s \t %-20s \n", view.staffID, view.name, view.position, view.telno, view.acc.password, view.acc.pwRecovery);
+			record++;
+		}
+		fclose(viewptr);
+		printf("\n Total Staff Records Displayed : %d\n", record);
 		if(exist == 0) {
 			printf(" Staff ID not found!\n");
 		}
-		printf("\n Continue deleting? (N - No) > ");
-		scanf("%c", &con);
-		rewind(stdin);
-		printf("\n");
-		if (toupper(con) == 'N') {
-			manageStaff();
-		}
+		manageStaff();
 	}
 }
