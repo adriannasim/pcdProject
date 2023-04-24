@@ -2,7 +2,7 @@
 
 void memberModule(char username[21]);
 void viewInfo(char username[21]);
-void chgDet(int count, int line);
+void chgDet(int count, int line, char username[21]);
 void chgPsw(char username[21]);
 void purchase(char username[21]);
 void pHistory(char username[21]);
@@ -134,6 +134,9 @@ void memberLogin() {
                     if (strlen(reg.ic) > 12) {
                         printf(" Enter only 12 characters.\n");
                     }
+                    else if (strlen(reg.ic) < 12) {
+                        printf(" Enter 12 characters.\n");
+                    }
                     else {
                         break;
                     }
@@ -144,13 +147,14 @@ void memberLogin() {
                     printf(" > ");
                     scanf("%[^\n]", &reg.phoneNo);
                     rewind(stdin);
-                    if (strlen(reg.phoneNo) > 11) {
-                        printf(" Enter only 11 characters.\n");
+                    if (strlen(reg.phoneNo) > 11 || strlen(reg.phoneNo) < 10) {
+                        printf(" Enter 10 to 11 characters.\n");
                     }
                     else {
                         break;
                     }
                 }
+                printf(" Registration Successful.\n");
                 break;
             }
             fprintf(fdetails, "%s|%s|%c|%s|%s\n", reg.lDetails.username, reg.name, reg.gender, reg.ic, reg.phoneNo);
@@ -330,6 +334,7 @@ void chgDet(int count, int line, char username[21]) {
                 fprintf(fchg, "%s|%s|%c|%s|%s\n", mArray[i].lDetails.username, mArray[i].name, mArray[i].gender, mArray[i].ic, mArray[i].phoneNo);
             }
             fclose(fchg);
+            printf(" Details Modified.\n");
             return;
             break;
         default:
