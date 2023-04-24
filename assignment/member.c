@@ -9,9 +9,9 @@ void pHistory(char username[21]);
 void viewRef(char username[21]);
 
 void memberLogin() {
-    Login input, compare;
+    Login input, compare, check;
     mDetails reg;
-    FILE* flogin, * fdetails;
+    FILE* flogin, * fdetails, *fchk;
     int choice;
 
     printf("\n WELCOME TO TWAY MLM MEMBER LOGIN PAGE.\n");
@@ -58,6 +58,7 @@ void memberLogin() {
             while (1) {
                 flogin = fopen("memberLogin.txt", "a");
                 fdetails = fopen("memberDetails.txt", "a");
+                fchk = fopen("memberLogin.txt", "r");
                 if (flogin == NULL || fdetails == NULL) {
                     printf("Error in opening file.\n");
                     return;
@@ -68,15 +69,21 @@ void memberLogin() {
                     printf(" > ");
                     scanf("%[^\n]", &reg.lDetails.username);
                     rewind(stdin);
-                    if (strcmp("EXIT", reg.lDetails.username) == 0 || strcmp("exit", reg.lDetails.username) == 0) {
-                        return;
+                    while (fscanf(fchk, "%[^|]|%[^\n]\n", &check.username, &check.password)) {
+                        if (strcmp("EXIT", reg.lDetails.username) == 0 || strcmp("exit", reg.lDetails.username) == 0) {
+                            return;
+                        }
+                        else if (strcmp(check.username, reg.lDetails.username) == 0) {
+                            printf(" USERNAME in used. Try another one.\n");
+                        }
+                        else if (strlen(reg.lDetails.username) > 20) {
+                            printf(" Enter only 12 characters.\n");
+                        }
+                        else {
+                            break;
+                        }
                     }
-                    else if (strlen(reg.lDetails.username) > 20) {
-                        printf(" Enter only 12 characters.\n");
-                    }
-                    else {
-                        break;
-                    }
+                    break;
                 }
 
                 while (1) {
@@ -110,6 +117,7 @@ void memberLogin() {
                     printf(" > ");
                     scanf("%c", &reg.gender);
                     rewind(stdin);
+                    reg.gender = toupper(reg.gender);
                     if (reg.gender != 'M' && reg.gender != 'F') {
                         printf(" Wrong input. Please try again.");
                     }
@@ -149,6 +157,7 @@ void memberLogin() {
             fprintf(flogin, "%s|%s\n", reg.lDetails.username, reg.lDetails.password);
             fclose(flogin);
             fclose(fdetails);
+            fclose(fchk);
         }
         else if (choice == 3) {
             return;
@@ -157,6 +166,7 @@ void memberLogin() {
             printf(" INVALID INPUT. PLEASE TRY AGAIN.\n");
         }
     }
+    return;
 }
 
 void memberModule(char username[21]) {
@@ -499,9 +509,11 @@ void viewRef(char username[21]) {
                     fref = fopen("referrals.txt", "r");
                     fsales = fopen("sales.txt", "r");
                     while (fscanf(fref, "%[^|]|%[^\n]\n", &referrer, &referredUser) != EOF) {
-                        while (fscanf(fsales, "%[^|]|%[^|]|%[^|]|%d|%lf\n", &com.username, &com.orderID, &com.code, &com.qty, &com.price) != EOF) {
-                            if (strcmp(referredUser, com.username) == 0) {
-                                totalCom = ((com.price* (double)com.qty) * 0.05);
+                        if (strcmp(username, referrer) == 0) {
+                            while (fscanf(fsales, "%[^|]|%[^|]|%[^|]|%d|%lf\n", &com.username, &com.orderID, &com.code, &com.qty, &com.price) != EOF) {
+                                if (strcmp(referredUser, com.username) == 0) {
+                                    totalCom = ((com.price * (double)com.qty) * 0.05);
+                                }
                             }
                         }
                     }
