@@ -34,7 +34,7 @@ void staffLogin() {
 		recovery();
 		break;
 	case 4:
-		return;
+		main();
 		break;
 	default:
 		printf(" Invalid action! Please re-enter > ");
@@ -287,7 +287,7 @@ void staffModule(char staffID[5]) {
 		shippingModule();
 		break;
 	case 5:
-		return;
+		staffLogin();
 		break;
 	default:
 		printf("Please enter a valid action!\n");

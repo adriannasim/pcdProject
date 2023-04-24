@@ -19,10 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="sales.c" />
     <ClCompile Include="staff.c" />
     <ClCompile Include="member.c" />
     <ClCompile Include="menu.c" />
-    <ClCompile Include="sales.c" />
     <ClCompile Include="shipping.c" />
     <ClCompile Include="stock.c" />
   </ItemGroup>
