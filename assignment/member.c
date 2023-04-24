@@ -195,7 +195,7 @@ void memberModule(char username[21]) {
 }
 
 void viewInfo(char username[21]) {
-    int option, chg, count = 0, line;
+    int option, chg, count = 0, line = 0;
     mDetails viewDetails;
     FILE* fdetails = fopen("memberDetails.txt", "r"), *fchg;
     if (fdetails == NULL) {
@@ -228,7 +228,7 @@ void viewInfo(char username[21]) {
             return;
             break;
         case 2:
-            chgDet(count, line);
+            chgDet(count, line, username);
             break;
         case 3:
             chgPsw(username);
@@ -239,28 +239,29 @@ void viewInfo(char username[21]) {
     }
 }
 
-void chgDet(int count, int line) {
+void chgDet(int count, int line, char username[21]) {
     FILE* fdetails, *fchg;
     mDetails viewDetails, chgDetails, mArray[MAX_SIZE];
-    int chg;
+    int chg, loop = 0, cpy = 0;
 
     //store whole file into array for later changes
     fdetails = fopen("memberDetails.txt", "r");
-    while (fscanf(fdetails, "%[^|]|%[^|]|%[^|]|%[^|]|%[^\n]\n", &viewDetails.lDetails.username, &viewDetails.name, &viewDetails.gender, &viewDetails.ic, &viewDetails.phoneNo) != EOF) {
-        for (int i = 0; i < count; i++) {
-            strcpy(mArray[i].lDetails.username, viewDetails.lDetails.username);
-            strcpy(mArray[i].name, viewDetails.name);
-            mArray[i].gender = viewDetails.gender;
-            strcpy(mArray[i].ic, viewDetails.ic);
-            strcpy(mArray[i].phoneNo, viewDetails.phoneNo);
+    while (fscanf(fdetails, "%[^|]|%[^|]|%c|%[^|]|%[^\n]\n", &viewDetails.lDetails.username, &viewDetails.name, &viewDetails.gender, &viewDetails.ic, &viewDetails.phoneNo) != EOF) {
+        strcpy(mArray[cpy].lDetails.username, viewDetails.lDetails.username);
+        strcpy(mArray[cpy].name, viewDetails.name);
+        mArray[cpy].gender = viewDetails.gender;
+        strcpy(mArray[cpy].ic, viewDetails.ic);
+        strcpy(mArray[cpy].phoneNo, viewDetails.phoneNo);
+        //incase customer does not change any details
+        if (strcmp(viewDetails.lDetails.username, username) == 0) {
+            strcpy(chgDetails.name, viewDetails.name);
+            chgDetails.gender = viewDetails.gender;
+            strcpy(chgDetails.ic, viewDetails.ic);
+            strcpy(chgDetails.phoneNo, viewDetails.phoneNo);
         }
+        cpy++;
     }
     fclose(fdetails);
-    //incase customer does not change any details
-    strcpy(chgDetails.name, viewDetails.name);
-    chgDetails.gender = viewDetails.gender;
-    strcpy(chgDetails.ic, viewDetails.ic);
-    strcpy(chgDetails.phoneNo, viewDetails.phoneNo);
     while (1) {
         printf("\n CHOOSE OPTION TO CHANGE DETAILS\n");
         printf(" ===============================\n");
@@ -302,6 +303,7 @@ void chgDet(int count, int line) {
             //store changed details into the array
             for (int i = 0; i < count; i++) {
                 if (i == line - 1) {
+                    strcpy(mArray[i].lDetails.username, username);
                     strcpy(mArray[i].name, chgDetails.name);
                     mArray[i].gender = chgDetails.gender;
                     strcpy(mArray[i].ic, chgDetails.ic);
@@ -328,7 +330,7 @@ void chgDet(int count, int line) {
 
 void chgPsw(char username[21]) {
     char inputPsw[21], oldPsw[21], newPsw[21];
-    int pLine, pCount = 0;
+    int pLine, pCount = 0, cpy = 0;
     Login lDetails, lArray[MAX_SIZE];
     FILE* fchg, *fpsw, *fcpy;
 
@@ -356,10 +358,9 @@ void chgPsw(char username[21]) {
     fcpy = fopen("memberLogin.txt", "r");
     while (fscanf(fcpy, "%[^|]|%[^\n]\n", &lDetails.username, &lDetails.password) != EOF) {
         //store whole file into array for later changes
-        for (int i = 0; i < pCount; i++) {
-            strcpy(lArray[i].username, lDetails.username);
-            strcpy(lArray[i].password, lDetails.password);
-        }
+        strcpy(lArray[cpy].username, lDetails.username);
+        strcpy(lArray[cpy].password, lDetails.password);
+        cpy++;
     }
     printf(" Please enter new password.\n");
     printf(" > ");

@@ -34,7 +34,7 @@ void staffLogin() {
 		recovery();
 		break;
 	case 4:
-		return;
+		main();
 		break;
 	default:
 		printf(" Invalid action! Please re-enter > ");
