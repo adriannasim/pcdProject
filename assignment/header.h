@@ -40,7 +40,7 @@ typedef struct {
 
 struct Shipment {
     char senderName[20];
-    char senderAddress[20];
+    char senderAddress[100];
     char trackingNumber[20];
     char receiverName[50];
     char receiverAddress[100];
@@ -51,7 +51,7 @@ struct Shipment {
 
 typedef struct {
     char senderName[20];
-    char senderAddress[20];
+    char senderAddress[100];
     char trackingNumber[20];
     char receiverName[50];
     char receiverAddress[100];
