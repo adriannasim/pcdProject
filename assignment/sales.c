@@ -1,4 +1,11 @@
-#include "header.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+#include <Windows.h>
+#include <time.h>
+#include <math.h>
+#pragma warning (disable :4996)
 
 void addSales(char username[21]);
 void searchSales();
@@ -6,6 +13,23 @@ void editSales();
 void viewSales();
 void deleteSales();
 void salesReport();
+
+typedef struct {
+	char orderID[5];
+	char code[5];
+	int qty;
+	double bprice,price, tPrice;
+	char username[21];
+	char uplineID[5];
+	double comm;
+}SalesOrder;
+
+typedef struct {
+	char code[5],desc[50];
+	double price;
+	int qty, mlvl, rqty;
+
+}record;
 
 void salesModule() {
 	// allow user to input selection
@@ -219,10 +243,10 @@ void searchSales() {
 		printf("Error file open!\n");
 		exit(-1);
 	}
-	int option = 4;
+	int option = 5;
 	char code[100];
-	int found = 0, id = 0, codes = 0, qty = 0, pricet = 0;
-	char tempID[20], tempCode[20];
+	int found = 0, id = 0, codes = 0, qty = 0, pricet = 0, tname = 0;
+	char tempID[20], tempCode[20], tempname[20];
 	int tempQty;
 	double tempPrice;
 	SalesOrder order;
@@ -234,15 +258,16 @@ void searchSales() {
 			printf("2. Code\n");
 			printf("3. Quantity\n");
 			printf("4. Price\n");
-			printf("5. Return\n");
+			printf("5. Username\n");
+			printf("6. Return\n");
 			do {
 				printf("Search By: ");
 				rewind(stdin);
 				scanf("%d", &option);
-				if (option < 1 || option >5) {
-					printf("Invalid Input Entered !! Please select a number between 1-5 ONLY!\n");
+				if (option < 1 || option >6) {
+					printf("Invalid Input Entered !! Please select a number between 1-6 ONLY!\n");
 				}
-			} while (option < 1 || option >5);
+			} while (option < 1 || option >6);
 			switch (option) {
 			case 1:
 			{
@@ -352,13 +377,47 @@ void searchSales() {
 				break;
 			}
 			case 5:
+			{
+				char tempname[20];
+				printf("\nPlease enter the item Code : ");
+				rewind(stdin);
+				scanf("%s", tempname);
+
+				printf("%-20s%-20s%-20s%-20s\n", "Order ID", "Item Code", "Item Quantity", "Price");
+
+				int codes = 0; // initialize codes to 0
+				FILE* rPtr = fopen("sales.txt", "r");
+				if (rPtr == NULL) {
+					printf("Error file open!\n");
+					exit(-1);
+				}
+
+				SalesOrder order;
+				while (fscanf(rPtr, "%[^|]|%[^|]|%[^|]|%d|%lf\n", order.username, order.orderID, order.code, &order.qty, &order.price) != EOF) {
+					if (strcmp(order.username, tempname) == 0) {
+						printf("%-20s%-20s%-20d%-20.2lf\n", order.orderID, order.code, order.qty, order.price);
+						printf("___________________________________________________________________________\n");
+						tname++;
+					}
+				}
+				fclose(rPtr);
+
+				if (tname > 0) {
+					printf("%d matches were found\n", tname);
+				}
+				else {
+					printf("0 Matches found. Please make sure format entered is correct\n");
+				}
+			}
+				break;
+			case 6:
 				return;
 				break;
 			default:
 				printf("Invalid input\n");
 				break;
 			}
-		} while (option != 5);
+		} while (option != 6);
 
 	}		
 	fclose(rPtr);

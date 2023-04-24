@@ -90,5 +90,5 @@ typedef struct {
 //constants
 #define MAX_SIZE 100
 #define MAX_SHIPMENTS 100
-#define ADMIN "A001"
+#define ADMIN "A000"
 #define ADMINPW "000000"
