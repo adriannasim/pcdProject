@@ -53,7 +53,7 @@ void login() {
 	while (fread(&login[lCount], sizeof(StaffDetails), 1, loginptr) != 0) {
 		lCount++;
 	} fclose(loginptr);
-	while (toupper(con) == 'Y') {
+	LOOP1:while (toupper(con) == 'Y') {
 		printf(" Enter Staff ID : ");
 		scanf("%s", &acc.staffID);
 		rewind(stdin);
@@ -79,20 +79,11 @@ void login() {
 				}
 			}
 		}
-		else {
-			printf(" Staff ID does not exist!\n");
-			printf(" Continue Log in? (N - No) > ");
-			scanf("%c", &con);
-			if (toupper(con) == 'N') {
-				staffLogin();
-			}
-		}
 		for (int i = 0; i < lCount; i++) {
 			if (strcmp(login[i].staffID, acc.staffID) == 0) {
 				printf(" Enter Password : ");
 				scanf("%s", &acc.pass.password);
 				rewind(stdin);
-				while (1) {
 					if (strcmp(login[i].acc.password, acc.pass.password) == 0) {
 						printf("\n Login Successful\n Welcome %s!\n", login[i].name);
 						staffModule(login[i].name);
@@ -104,20 +95,22 @@ void login() {
 						if (toupper(con) == 'Y') {
 							recovery();
 						}
+						else {
+							con = 'Y';
+							goto LOOP1;
+						}
+
 					}
-				}
 			}
-			else {
-				printf(" Staff ID does not exist!\n");
-				printf(" Continue Log in? (N - No) > ");
-				scanf("%c", &con);
-				if (toupper(con) == 'N') {
-					staffLogin();
-				}
-				else {
-					continue;
-				}
-			}
+		}
+		printf(" Staff ID does not exist!\n");
+		printf(" Continue Log in? (N - No) > ");
+		scanf("%c", &con);
+		if (toupper(con) == 'N') {
+			staffLogin();
+		}
+		else {
+			continue;
 		}
 	}
 }
@@ -133,21 +126,19 @@ void signup() {
 	printf("\n -------------------");
 	printf("\n  NEW STAFF SIGN UP\n");
 	printf(" -------------------\n\n");
-	printf(" Enter Staff ID                      : ");
-	scanf("%s", &view.staffID);
-	rewind(stdin);
-	while (toupper(con) == 'Y') {
+	
+	LOOP:while (toupper(con) == 'Y') {
+		printf(" Enter Staff ID                      : ");
+		scanf("%s", &view.staffID);
+		rewind(stdin);
 		for (int i = 0; i < sCount; i++) {
-			if (strcmp(sign[i].staffID, view.staffID) == 0) {
-				while (1) {
+			LOOP2:if (strcmp(sign[i].staffID, view.staffID) == 0) {
 				printf(" Enter Password (Default = Staff ID) : ");
 				scanf("%s", &view.acc.password);
 				rewind(stdin);
 				if (strcmp(sign[i].acc.password, view.acc.password) != 0) {
 					printf(" NOTE: Default password = Staff ID\n");
-				} else {
-					break;
-				}
+					goto LOOP2;
 				}
 				printf(" Enter New Password (6 digits)       : ");
 				while (1) {
@@ -171,7 +162,6 @@ void signup() {
 					scanf("%c", &con);
 					rewind(stdin);
 					if (toupper(con) == 'Y') {
-						printf(" New User Sign In Completed!\n");
 						strcpy(view.name, sign[i].name);
 						strcpy(view.position, sign[i].position);
 						strcpy(view.telno, sign[i].telno);
@@ -181,6 +171,9 @@ void signup() {
 							fwrite(&sign[i], sizeof(StaffDetails), 1, wptr);
 						}
 						fclose(wptr);
+
+						printf(" New User Sign In Completed!\n");
+						
 						staffLogin();
 						break;
 					}
@@ -194,18 +187,21 @@ void signup() {
 					}
 				}
 			}
-			else {
-			printf(" Staff ID does not exist!\n");
-	}
-	printf(" Continue Signing Up? (N - No) > ");
-	scanf("%c", &con);
-	rewind(stdin);
-	printf("\n");
-	if (toupper(con) == 'N') {
-		staffLogin;
-	}
 		}
-	} 
+		printf(" Staff ID does not exist!\n");
+		printf(" Continue Signing Up? (N - No) > ");
+		scanf("%c", &con);
+		rewind(stdin);
+		printf("\n");
+		if (toupper(con) == 'N') {
+			staffLogin();
+		}
+		else
+		{
+			goto LOOP;
+		}
+	}
+ 
 	
 }
 
@@ -377,7 +373,7 @@ void addStaff() {
 	printf(" -----------\n");
 	do {
 		int valid = 0;
-		while (!valid) {
+		LOOP:while (!valid) {
 			printf("\n Enter Staff ID (e.g A000)                          : ");
 			scanf("%4s", staff.staffID);
 			rewind(stdin);
@@ -393,9 +389,7 @@ void addStaff() {
 							manageStaff();
 						}
 						else {
-							printf("\n Enter Staff ID (e.g A000)                          : ");
-							scanf("%4s", staff.staffID);
-							rewind(stdin);
+							goto LOOP;
 						}
 					}
 					}	if (strcmp(ADMIN, staff.staffID) == 0) {
@@ -407,9 +401,7 @@ void addStaff() {
 								manageStaff();
 							}
 							else {
-								printf("\n Enter Staff ID (e.g A000)                          : ");
-								scanf("%4s", staff.staffID);
-								rewind(stdin);
+								goto LOOP;
 							}
 						}
 				valid = 1;
@@ -617,12 +609,13 @@ void deleteStaff() {
 				rewind(stdin);
 				exist++;
 				if (toupper(sure) == 'Y') {
-					
 					printf(" Staff %s has been successfully deleted!\n", temp.staffID);
+					
 				}
 				else {
 					printf(" Deletion attempt unsuccessful!\n");
 				}
+					
 			}
 		}
 		fclose(dltptr);
